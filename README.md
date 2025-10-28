@@ -2,7 +2,7 @@
 
 **Git-native, cryptographically verifiable, append-only ledgers with policy enforcement.**
 
-<img alt="ledger-kernel" src="https://github.com/user-attachments/assets/1b0a40d8-0cac-44c5-800f-f756f0a6825d" align="right" height="340"/>
+<img alt="ledger-kernel" src="https://github.com/user-attachments/assets/1b0a40d8-0cac-44c5-800f-f756f0a6825d" align="right" height="500"/>
 
 > _“What if Git’s content-addressed DAG could be constrained into a deterministic state machine with cryptographic proofs for every transition?”_
 
@@ -15,9 +15,9 @@ It adds deterministic replay, cryptographic attestation, and programmable policy
 
 It uses existing `.git` storage, requiring no daemons or databases. It enforces fast-forward-only semantics to ensure history is immutable and guarantees deterministic replay, where identical input always yields identical state. Every entry is attested for non-repudiable authorship, and the system supports WASM-based policies for validation.
 
-## Why Use It?
+### Why Use It?
 
-### The Problem
+#### The Problem
 
 You need tamper-evident provenance for deployments, supply-chain attestations, configuration histories, or schema registries — but you don’t want to run a blockchain node, depend on a vendor SaaS, or invent another storage format.
 

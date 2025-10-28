@@ -136,9 +136,9 @@ Compliance levels progress from Core (eight mandatory invariants) to Verified (i
 
 ### Language Bindings Status  
 
-The C language is the reference implementation (✅ Reference, [libgitledger](https://github.com/flyingrobots/libgitledger)). 
-Rust is currently in progress (🚧 In progress, —).  
-Go, JS / WASM, and Python are all planned (🔜 Planned, —).  
+- The C language is the reference implementation (✅ Reference, [libgitledger](https://github.com/flyingrobots/libgitledger)).  
+- Rust is currently in progress (🚧 In progress, —).  
+- Go, JS / WASM, and Python are all planned (🔜 Planned, —).  
 
 ---
 
@@ -203,11 +203,15 @@ git mind query "show me all TODO items"
 
 ## Contact
 
-**Author**: _J. Kirby Ross_ (**Email**: [james@flyingrobots.dev](mailto:james@flyingrobots.dev) | **GitHub**: [flyingrobots](https://github.com/flyingrobots)
+**Author**: _J. Kirby Ross_  
+**Email**: [james@flyingrobots.dev](mailto:james@flyingrobots.dev)  
+**GitHub**: [flyingrobots](https://github.com/flyingrobots)  
 
-> _“Provenance without clutter. Policy as infrastructure. Zero SaaS, zero guesswork.”_
+---
 
 ## License
 
 MIT License (_with Ethical Use Clause_) · **© 2025 J. Kirby Ross**  
 _See [`LICENSE`](./LICENSE.md) and [`NOTICE`](./NOTICE) for terms._
+
+> _“Provenance without clutter. Policy as infrastructure. Zero SaaS, zero guesswork.”_

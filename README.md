@@ -35,8 +35,9 @@ git ledger replay --ref refs/_ledger/prod/deploys
 
 # Verify invariants (signatures, policies, timestamps)
 git ledger verify --ref refs/_ledger/prod/deploys
-What You Get
 ```
+
+### What You Get
 
 **Ledger-Kernel** and [`libgitledger`](https://github.com/flyingrobots/libgitledger) introduce **a new primitive**: _ledger entries_ — Git commits with _meaning, policy, and proof_. They’re quiet, boring, and perfectly auditable. You decide how to use them.
 
@@ -173,7 +174,7 @@ and [Nix](https://nixos.org/) for deterministic builds.
 
 **Why this exists:** I’ve built the pattern twice already. shiplog (battle-tested CLI & policy/trust) and git-mind (rigorous hexagonal architecture + roaring bitmap cache). `libgitledger` fuses them into one stable core library with bindings for Go/JS/Python.
 
-### 🚢 **[Shiplog](https://github.com/flyingrobots/shiplog) · Deployment Provenance Without SaaS**
+### 🚢 [Shiplog](https://github.com/flyingrobots/shiplog) • Deployment Provenance Without SaaS
 
 <img alt="shiplog-paper-logo" src="https://github.com/user-attachments/assets/18ab6ea1-6f62-4475-9f51-e11b2da824fc" height="200" align="right" />
 
@@ -187,7 +188,29 @@ git shiplog run <your-command>
 
 Shiplog captures stdout, stderr, exit code, timestamp, author, and reason - the stuff you'd normally lose to the void - and logs it in a signed, immutable ref right inside Git. Who/What/Where/When/Why/How; mystery solved. Deployment logs now live with your codebase, but apart from it. Provenance without clutter.
 
-### 🧠 Git-Mind · Knowledge Graphs in Git
+### 🛼 [Wesley](https://github.com/flyingrobots/wesley) • The Data Layer Compiler
+
+<img alt="wesley" src="https://github.com/user-attachments/assets/23e9810c-3f45-4696-8b78-2467f059f83b" width="200" align="right" />
+
+
+Stop describing your data model six times in six different files.  
+Everyone else generates GraphQL from databases. Wesley flips the stack and generates databases from GraphQL.
+
+From one schema, Wesley compiles your entire backend:
+
+- Postgres DDL & migrations
+- TypeScript types & Zod validators
+- Supabase RLS, Realtime & Storage rules
+- tRPC endpoints & Prisma/Drizzle integration
+- pgTAP tests
+- A SHA-locked "Shipme" certification file for zero-downtime deployments
+
+Your schema is the source of truth. Everything else is a compilation target.  
+Banish drift. Never think about migrations again. Describe your shapes once and let Wesley handle the rest.
+
+_Go on, deploy on a Friday._
+
+### 🧠 Git-Mind • Knowledge Graphs in Git
 
 <img alt="git-mind" src="https://github.com/user-attachments/assets/96af151b-cc1e-454f-9090-fbe96bcd79d4" width="200" align="right" />
 
@@ -197,7 +220,7 @@ git mind query "show me all TODO items"
 ```
 > _Version your thoughts. Branch your ideas. Merge understanding._
 
-`git-mind` is an open-source protocol and toolkit that turns Git into a database-less, version-controlled semantic knowledge graph — a substrate for distributed cognition, evolving interpretation, and human–AI co-thought.
+`git-mind` is an open-source protocol and toolkit that turns Git into a database-less, version-controlled semantic knowledge graph — a tool for distributed cognition, evolving interpretation, and human–AI co-thought.
 
 ---
 

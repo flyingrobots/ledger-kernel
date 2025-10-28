@@ -1,264 +1,213 @@
 # Ledger-Kernel
 
-***Git-native, cryptographically verifiable, append-only ledgers with policy enforcement.***
+**Git-native, cryptographically verifiable, append-only ledgers with policy enforcement.**
 
-<p align="center">
-  <img src="docs/images/ledger-kernel-logo.png" width="300" alt="Ledger Kernel Logo"/>
-</p>
+<img alt="ledger-kernel" src="https://github.com/user-attachments/assets/1b0a40d8-0cac-44c5-800f-f756f0a6825d" align="right" height="340"/>
 
-> "What if Git's content-addressed DAG could be constrained into a deterministic state machine with cryptographic proofs for every transition?"
+> _“What if Git’s content-addressed DAG could be constrained into a deterministic state machine with cryptographic proofs for every transition?”_
 
-## What Is This?
+### What Is It?
 
-**Ledger-Kernel** is a formal specification and reference implementation ([`libgitledger`](https://github.com/flyingrobots/libgitledger)) for building verifiable, append-only ledgers directly on top of Git's object model.
+**Ledger-Kernel** is a formal specification and reference implementation ([`libgitledger`](https://github.com/flyingrobots/libgitledger)) for building verifiable, append-only ledgers directly on top of Git’s object model.
 
-Unlike traditional blockchain or distributed ledger systems, Ledger-Kernel:
+Unlike blockchains or SaaS audit logs, **Ledger-Kernel is just Git**. 
+It adds deterministic replay, cryptographic attestation, and programmable policy enforcement without introducing new infrastructure.
 
-✅ Is just Git! No custom storage, no daemons, just `.git`.- 
-✅ Enforces fast-forward-only semantics. History is immutable by design.- 
-✅ Provides deterministic replay. Same entries = same state, always.- 
-✅ Cryptographically attests every entry. Non-repudiable authorship.- 
-✅ Supports programmable policies. WASM-based rules for entry validation.
+It uses existing `.git` storage, requiring no daemons or databases. It enforces fast-forward-only semantics to ensure history is immutable and guarantees deterministic replay, where identical input always yields identical state. Every entry is attested for non-repudiable authorship, and the system supports WASM-based policies for validation.
 
-## Why Would You Use This?
+## Why Use It?
 
 ### The Problem
 
-You need tamper-evident provenance for:
+You need tamper-evident provenance for deployments, supply-chain attestations, configuration histories, or schema registries — but you don’t want to run a blockchain node, depend on a vendor SaaS, or invent another storage format.
 
-- Software supply chain attestations (SLSA, Sigstore, in-toto)
-- Deployment histories (who deployed what, when, and why)
-- Configuration changes (immutable audit logs)
-- Registry systems (package versions, schema migrations)
+#### The Solution
 
-But you don't want to:
-
-- Run a blockchain node
-- Trust a centralized SaaS
-- Invent yet another storage format
-
-## The Solution
-
-**Ledger-Kernel** gives you blockchain-like guarantees using Git as the database.
+**Ledger-Kernel** provides blockchain-grade guarantees using Git as the database.
 
 ```bash
 # Append a deployment record
-git ledger append --ref refs/_ledger/prod/deploys - 
-  --payload '{"service":"api","version":"v1.2.3","who":"alice"}'
+git ledger append --ref refs/_ledger/prod/deploys \
+  --payload '{"service":"api","version":"v1.2.3","who":"alice"}'
 
-# Replay the ledger to verify state
+# Replay to verify deterministic state
 git ledger replay --ref refs/_ledger/prod/deploys
 
-# Verify all invariants (signatures, policies, timestamps)
+# Verify invariants (signatures, policies, timestamps)
 git ledger verify --ref refs/_ledger/prod/deploys
+What You Get
 ```
 
-## What You Get
-
-So, what can you do with an append-only ledger with cryptographically signed provenance? It's up to you! Ledger-Kernel and `libgitledger` aren't workflows, they give you a new type of primitive. Before you had git commits, which tracked versions of your code. Now you have git ledger entries, and how you use them is up to you! This technology is simple, almost invisible. Boring, in the best way. But useful when it needs to be.
+**Ledger-Kernel** and [`libgitledger`](https://github.com/flyingrobots/libgitledger) introduce **a new primitive**: _ledger entries_ — Git commits with _meaning, policy, and proof_. They’re quiet, boring, and perfectly auditable. You decide how to use them.
 
 ## Architecture at a Glance
 
 ```mermaid
 graph BT
-  A(User Interfaces<br/>Apps, TUIs, CLIs) 
-  B(Edge Libraries<br/>Domain Logic, Schemas)
-  C(Adapters / Ports<br/>libgit2, FS, WASM, RPC)
-  D(libgitledger<br/>Reference Implementation)
-  E(Ledger-Kernel Specification<br/>Invariants & Model)
+  A(User Interfaces<br/>Apps, TUIs, CLIs)
+  B(Edge Libraries<br/>Domain Logic, Schemas)
+  C(Adapters / Ports<br/>libgit2, FS, WASM, RPC)
+  D(libgitledger<br/>Reference Implementation)
+  E(Ledger-Kernel Specification<br/>Invariants & Model)
 
-  B --> A
-  C --> B
-  D --> C
-  E --> D
+  B --> A
+  C --> B
+  D --> C
+  E --> D
 ```
 
-### Layers
+> _Data flows upward through distinct layers._
 
-Data flows unidirectionally. Components have been cleanly separated by domain. Ex: A user wants to add an Entry to the Ledger. (i) They issue a command (ii) the application's business layer handles it (iii) requesting a git commit from the git service (iv) which then creates the git commit and pushes only the specific ledger-namespaced refs it updated using `--no-verify` to avoid triggering git hooks.
+The architecture is layered. The Kernel Spec defines the formal model and invariants. [`libgitledger`](https://github.com/flyingrobots/libgitledger) implements those rules in portable C. Adapters connect to Git, WASM policy engines, and RPC daemons. Edges (like [Shiplog](https://github.com/flyingrobots/shiplog), [Wesley](https://github.com/flyingrobots/wesley), [Git-Mind](https://github.com/neuroglyph/git-mind)) apply them to real-world domains. Finally, UIs—CLIs, TUIs, and dashboards—wrap the edges for human use.
 
-**Kernel Spec** - Formal model, invariants, compliance tests- 
-`libgitledger` - Portable C implementation with FFI bindings- 
-**Adapters** - Git (`libgit2`), WASM policy VM, RPC daemon- 
-**UIs** - CLIs, TUIs, web dashboards- 
-**Edges** - Domain-specific tools ([Shiplog](https://github.com/flyingrobots/shiplog), [Wesley](https://github.com/flyingrobots/Wesley), [Git-Mind](http://github.com/neuroglyph/git-mind))
+---
 
 ## Core Invariants
 
-Every compliant implementation **MUST** enforce:
+**Append-Only:** Entries cannot be modified or deleted.  
+**Fast-Forward Only:** No rebases or force pushes.  
+**Deterministic Replay:** Identical inputs always produce identical state.  
+**Authenticated Entries:** Every entry is cryptographically signed.  
+**Policy Enforcement:** Programmable rules gate entry acceptance.  
+**Temporal Monotonicity:** Timestamps never regress.  
+**Namespace Isolation:** Ledgers remain self-contained.  
 
-| **Invariant** | **Meaning** |- 
-|---------------|-------------|- 
-| **Append-Only** | Entries cannot be modified or deletedFast-Forward OnlyNo rebases, no force pushes |- 
-| **Deterministic Replay** | Identical inputs → identical state |- 
-| **Authenticated Entries** | All entries cryptographically signed |- 
-| **Policy Enforcement** | Programmable rules gate entry acceptance |- 
-| **Temporal Monotonicity** | Timestamps never regress |- 
-| **Namespace Isolation** | Ledgers are independent |
+---
 
 ## Quick Start
 
-1. Install `libgitledger`
+1.  **Install libgitledger**
+    ```bash
+    git clone https://github.com/flyingrobots/ledger-kernel
+    cd ledger-kernel && make && sudo make install
+    ```
 
-```bash
-git clone https://github.com/flyingrobots/ledger-kernel
-cd ledger-kernel
-make && sudo make install
-```
+2.  **Initialize a Ledger**
+    ```bash
+    git init my-ledger
+    cd my-ledger
+    git ledger init --namespace prod/deploys
+    ```
 
-2. Initialize a Ledger
+3.  **Append an Entry**
+    ```bash
+    git ledger append \
+      --ref refs/_ledger/prod/deploys \
+      --payload '{"msg":"Deployed api@v1.0.0"}' \
+      --sign-with ~/.ssh/id_ed25519
+    ```
 
-```bash
-git init my-ledger
-cd my-ledger
-git ledger init --namespace prod/deploys
-```
+4.  **Replay & Verify**
+    ```bash
+    git ledger replay  --ref refs/_ledger/prod/deploys
+    git ledger verify  --ref refs/_ledger/prod/deploys
+    ```
 
-3. Append an Entry
-
-```bash
-git ledger append - 
-  --ref refs/_ledger/prod/deploys - 
-  --payload '{"msg":"Deployed api@v1.0.0"}' - 
-  --sign-with ~/.ssh/id_ed25519
-```
-
-4. Replay & Verify
-
-```bash
-# Deterministically reconstruct state
-git ledger replay --ref refs/_ledger/prod/deploys
-
-# Verify all cryptographic proofs
-git ledger verify --ref refs/_ledger/prod/deploys
-```
+---
 
 ## Documentation
 
-| Document | Purpose |
-| SPEC.md | Formal specification and invariants |
-| MODEL.md | Mathematical state-transition model |
-| ARCHITECTURE.md | System design and layer responsibilities |
-| IMPLEMENTATION.md | libgitledger implementation details |
-| REFERENCE.md | Language-neutral API contract |
-| COMPLIANCE.md | Test suite and conformance criteria |
-
-## Edge Systems (Art Built on Ledger-Kernel)
-
-### 🚢 Shiplog
-
-> *Deployment provenance without SaaS*
-
-```bash
-git shiplog run -- "kubectl apply -f deploy.yaml"
-```
-
-- Captures `$PWD`, `$USER`, `$HOSTNAME`, `exit` code
-- Signs with SSH key
-- Appends to ledger in `.git`
-- Zero external dependencies
-
-### 🧠 Git-Mind
-
-> *Knowledge graphs in Git*
-
-```bash
-git mind ingest notes/
-git mind query "show me all TODO items"
-```
-
-- RDF triples stored as ledger entries
-- Deterministic graph replay
-- SPARQL-like queries
+[**SPEC.md**](./SPEC.md): Formal specification and invariants   
+[**MODEL.md**](./MODEL.md): Mathematical state-transition model   
+[**ARCHITECTURE.md:**](./ARCHITECTURE.md) System design and layering   
+[**IMPLEMENTATION.md:**](./IMPLEMENTATION.md) Reference C implementation details   
+[**REFERENCE.md:**](./REFERENCE.md) Language-neutral API contract   
+[**COMPLIANCE.md:**](./COMPLIACE.md) Test suite and conformance criteria   
 
 ## Security Model
 
-| **Principle** | **Implementation** |
-|-----------|----------------|
-| Traceability | Every entry is cryptographically signed |
-| Non-Repudiation | Compliance proofs are emitted per operation |
-| Monotonic Atomicity | Ledger refs only fast-forward |
-| Programmable Authorization | WASM policies enforce custom rules |
-| Offline Verifiability | Anyone with read-access can replay history |
+**Traceability**: Every entry is cryptographically signed.  
+**Non-Repudiation**: Compliance proofs are emitted per operation.  
+**Monotonic Atomicity**: Ledger refs advance only by fast-forward.  
+**Programmable Authorization**: WASM policies act as rule gates.  
+**Offline Verifiability**: Anyone with read access can replay history.  
 
-## Compliance & Testing
+---
+
+### Compliance & Testing
 
 ```bash
-# Run the full compliance suite
-make compliance
-
-# Check determinism across environments
-make determinism
-
-# Generate proof artifacts
-make proofs
+make compliance     # run invariant tests
+make determinism    # cross-platform determinism check
+make proofs         # emit proof artifacts
 ```
 
-## Compliance Levels:
+Compliance levels progress from Core (eight mandatory invariants) to Verified (independent audit with signed report).
 
-- **Core** - Pass 8 mandatory invariant tests
-- **Extended** - Multi-sig, policy composition, replay-under-failure
-- **Certified** - Reproducible proofs + determinism audit
-- **Verified** - Independently reviewed + signed compliance report
+### Language Bindings Status  
 
-## Language Bindings
-
-| Language | Status | Location |
-|----------|--------|----------|
-| C | 🚧 *Reference* | `libgitledger` |
-| Rust | 🚧 | In Progress |
-| bindings/Go | 🚧 | Planned |
-| bindings/go/JS/WASM | 🚧 | Planned |
-| bindings/js/Python | 🚧 | Planned |
-
-## Contributing
-
-<!-- We welcome contributions! Please see CONTRIBUTING.md for: -->
-
-_Coming Soon_
-
-<!-- Code style guidelines
-How to run tests
-Submitting PRs
-Reporting issues -->
+The C language is the reference implementation (✅ Reference, [libgitledger](https://github.com/flyingrobots/libgitledger)). 
+Rust is currently in progress (🚧 In progress, —).  
+Go, JS / WASM, and Python are all planned (🔜 Planned, —).  
 
 ---
 
-## License
+## Project Status 
 
-MIT - With Ethical Promise. © J. Kirby Ross- 
-See [LICENSE](./LICENSE) for details.
+### v0.1.0 (Draft Specification)
 
----
-
-## Project Status
-
-Current Version: 0.1.0 (Draft Specification)- 
-Roadmap:
-
-- [x] ✅ Specification finalized
-- [ ] 🚧 `libgitledger` reference implementation (in progress)
-- [ ] 🚧 Compliance test suite
-- [ ] 🔜 Edge system: Shiplog uses `libgitledger` instead of `git` (MVP)
-- [ ] 🔜 WASM policy engine integration
+The specification is finalized (✅). 
+The [`libgitledger`](https://github.com/flyingrobots/libgitledger) reference implementation and the compliance test suite are both in progress (🚧).  
+[Shiplog](https://github.com/flyingrobots/shiplog) integration using libgitledger and the WASM policy engine are planned for the future (🔜).  
 
 ---
 
 ## Acknowledgments
 
-### **Prior Art**
+This project acknowledges 
 
-- Git ([Linus Torvalds](https://github.com/torvalds)) - The content-addressed DAG
-- [Certificate Transparency](https://certificate.transparency.dev/) (Google) - Append-only logs
-- [Sigstore](https://www.sigstore.dev/) - Supply chain attestation
-- [Nix](https://nixos.org/) - Deterministic builds
+Git ([Linus Torvalds](https://github.com/torvalds)) for the content-addressed DAG  
+[Certificate Transparency](https://certificate.transparency.dev/) for append-only logs  
+[Sigstore](https://www.sigstore.dev/) for supply-chain attestations  
+and [Nix](https://nixos.org/) for deterministic builds.  
+
+---
+
+## Art Built on Ledger-Kernel Edges
+
+### 🧮 **[`libgitledger`](https://github.com/flyingrobots/libgitledger)**
+
+<img alt="libgitledger" src="https://github.com/user-attachments/assets/071214f3-a7ca-4fa3-8528-1b5dc50bd3ef" height="200" align="right" />
+
+`libgitledger` is a portable, embeddable C library for append-only ledgers inside a Git repository. Each ledger is a linear history of Git commits on dedicated refs; entries are optionally signed, policy-checked, and indexed for instant queries. It enables both human-readable and binary-safe payloads via a pluggable encoder. ￼
+
+**Why this exists:** I’ve built the pattern twice already. shiplog (battle-tested CLI & policy/trust) and git-mind (rigorous hexagonal architecture + roaring bitmap cache). `libgitledger` fuses them into one stable core library with bindings for Go/JS/Python.
+
+### 🚢 **[Shiplog](https://github.com/flyingrobots/shiplog) · Deployment Provenance Without SaaS**
+
+<img alt="shiplog-paper-logo" src="https://github.com/user-attachments/assets/18ab6ea1-6f62-4475-9f51-e11b2da824fc" height="200" align="right" />
+
+Shiplog turns your Git repo into a cryptographically-signed, append-only ledger for every deployment. Zero SaaS costs. Zero external infra. **Just Git.**
+
+Run anything with:
+
+```bash
+git shiplog run <your-command>
+```
+
+Shiplog captures stdout, stderr, exit code, timestamp, author, and reason - the stuff you'd normally lose to the void - and logs it in a signed, immutable ref right inside Git. Who/What/Where/When/Why/How; mystery solved. Deployment logs now live with your codebase, but apart from it. Provenance without clutter.
+
+### 🧠 Git-Mind · Knowledge Graphs in Git
+
+<img alt="git-mind" src="https://github.com/user-attachments/assets/96af151b-cc1e-454f-9090-fbe96bcd79d4" width="200" align="right" />
+
+```bash
+git mind ingest notes/
+git mind query "show me all TODO items"
+```
+> _Version your thoughts. Branch your ideas. Merge understanding._
+
+`git-mind` is an open-source protocol and toolkit that turns Git into a database-less, version-controlled semantic knowledge graph — a substrate for distributed cognition, evolving interpretation, and human–AI co-thought.
 
 ---
 
 ## Contact
 
-**Author**: J. Kirby Ross  
-**Email**: [<james@flyingrobots.dev>](mailto:james@flyingrobots.dev)   
-**GitHub**: [flyingrobots](https://github.com/flyingrobots/)
+**Author**: _J. Kirby Ross_ (**Email**: [james@flyingrobots.dev](mailto:james@flyingrobots.dev) | **GitHub**: [flyingrobots](https://github.com/flyingrobots)
 
-> "Provenance without clutter. Policy as infrastructure. Zero SaaS, zero guesswork."
+> _“Provenance without clutter. Policy as infrastructure. Zero SaaS, zero guesswork.”_
+
+## License
+
+MIT License (_with Ethical Use Clause_) · **© 2025 J. Kirby Ross**  
+_See [`LICENSE`](./LICENSE.md) and [`NOTICE`](./NOTICE) for terms._

@@ -1,0 +1,42 @@
+/* Custom theme palette for Ledger‑Kernel */
+
+:root {
+  /* TODO: replace these with your exact brand values */
+  --lk-bg: #f6f1e7;             /* light cream, to match hero background */
+  --lk-brand-orange: #e7692b;   /* logo orange (approx) */
+  --lk-brand-teal: #1a8a74;     /* logo teal (approx) */
+
+  /* VitePress palette overrides (light) */
+  --vp-c-bg: var(--lk-bg);
+  --vp-c-bg-soft: color-mix(in oklch, var(--lk-bg) 94%, black);
+
+  /* Use teal as brand (links, buttons) */
+  --vp-c-brand-1: var(--lk-brand-teal);
+  --vp-c-brand-2: color-mix(in oklch, var(--lk-brand-teal) 85%, white);
+  --vp-c-brand-3: color-mix(in oklch, var(--lk-brand-teal) 70%, white);
+  --vp-c-brand-soft: color-mix(in oklch, var(--lk-brand-teal) 10%, white);
+
+  /* Buttons */
+  --vp-button-brand-bg: var(--lk-brand-teal);
+  --vp-button-brand-border: var(--lk-brand-teal);
+  --vp-button-brand-hover-bg: color-mix(in oklch, var(--lk-brand-teal) 85%, black);
+  --vp-button-brand-hover-border: color-mix(in oklch, var(--lk-brand-teal) 85%, black);
+}
+
+/* Accent some headings with orange */
+.VPHome .VPHomeHero .name {
+  color: var(--lk-brand-orange);
+}
+
+/* Optional: soften feature cards on the cream bg */
+.VPFeature .box {
+  background: var(--vp-c-bg-soft);
+}
+
+/* Keep dark theme defaults (only tweak brand for contrast) */
+.dark {
+  --vp-c-brand-1: color-mix(in oklch, var(--lk-brand-teal) 85%, white);
+  --vp-c-brand-2: color-mix(in oklch, var(--lk-brand-teal) 70%, white);
+  --vp-c-brand-3: color-mix(in oklch, var(--lk-brand-teal) 60%, white);
+}
+

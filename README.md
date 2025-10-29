@@ -14,11 +14,12 @@ Unlike blockchains or SaaS audit logs, **Ledger-Kernel is just Git**.
 It adds deterministic replay, cryptographic attestation, and programmable policy enforcement without introducing new infrastructure.
 
 It uses existing `.git` storage, requiring no daemons or databases. It enforces fast-forward-only semantics to ensure history is immutable and guarantees deterministic replay, where identical input always yields identical state. Every entry is attested for non-repudiable authorship, and the system supports WASM-based policies for validation.
-✅ Is just Git! No custom storage, no daemons, just `.git`.
-✅ Enforces fast-forward-only semantics. History is immutable by design.
-✅ Provides deterministic replay. Same entries = same state, always.
-✅ Cryptographically attests every entry. Non-repudiable authorship.
-✅ Supports programmable policies. WASM-based rules for entry validation.
+
+✅ **It's _just_ Git!** No custom storage, no daemons, just `.git`.  
+✅ Enforces fast-forward-only semantics. History is immutable by design.  
+✅ Provides deterministic replay. Same entries = same state, always.  
+✅ Cryptographically attests every entry. Non-repudiable authorship.  
+✅ Supports programmable policies. WASM-based rules for entry validation.  
 
 ### Why Use It?
 

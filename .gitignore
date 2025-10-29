@@ -2,6 +2,11 @@
 .DS_Store
 .obsidian/
 
+# Node / VitePress
+node_modules/
+docs/.vitepress/dist/
+.vitepress/dist/
+
 # macOS system files
 .AppleDouble
 .LSOverride

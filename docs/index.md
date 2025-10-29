@@ -4,6 +4,9 @@ hero:
   name: Ledger-Kernel
   text: Git‑native, verifiable, append‑only ledger specification
   tagline: Deterministic replay • Fast‑forward only • Cryptographic attestations • Deterministic WASM policy
+  image:
+    src: /images/hero.webp
+    alt: Ledger‑Kernel hero art
   actions:
     - theme: brand
       text: Read the Spec

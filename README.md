@@ -14,10 +14,10 @@
 
 Unlike traditional blockchain or distributed ledger systems, Ledger-Kernel:
 
-✅ Is just Git! No custom storage, no daemons, just `.git`.- 
-✅ Enforces fast-forward-only semantics. History is immutable by design.- 
-✅ Provides deterministic replay. Same entries = same state, always.- 
-✅ Cryptographically attests every entry. Non-repudiable authorship.- 
+✅ Is just Git! No custom storage, no daemons, just `.git`.
+✅ Enforces fast-forward-only semantics. History is immutable by design.
+✅ Provides deterministic replay. Same entries = same state, always.
+✅ Cryptographically attests every entry. Non-repudiable authorship.
 ✅ Supports programmable policies. WASM-based rules for entry validation.
 
 ## Why Would You Use This?
@@ -77,24 +77,25 @@ graph BT
 
 Data flows unidirectionally. Components have been cleanly separated by domain. Ex: A user wants to add an Entry to the Ledger. (i) They issue a command (ii) the application's business layer handles it (iii) requesting a git commit from the git service (iv) which then creates the git commit and pushes only the specific ledger-namespaced refs it updated using `--no-verify` to avoid triggering git hooks.
 
-**Kernel Spec** - Formal model, invariants, compliance tests- 
-`libgitledger` - Portable C implementation with FFI bindings- 
-**Adapters** - Git (`libgit2`), WASM policy VM, RPC daemon- 
-**UIs** - CLIs, TUIs, web dashboards- 
-**Edges** - Domain-specific tools ([Shiplog](https://github.com/flyingrobots/shiplog), [Wesley](https://github.com/flyingrobots/Wesley), [Git-Mind](http://github.com/neuroglyph/git-mind))
+- Kernel Spec — Formal model, invariants, compliance tests
+- `libgitledger` — Portable C implementation with FFI bindings
+- Adapters — Git (`libgit2`), WASM policy VM, RPC daemon
+- UIs — CLIs, TUIs, web dashboards
+- Edges — Domain-specific tools ([Shiplog](https://github.com/flyingrobots/shiplog), [Wesley](https://github.com/flyingrobots/Wesley), [Git-Mind](http://github.com/neuroglyph/git-mind))
 
 ## Core Invariants
 
 Every compliant implementation **MUST** enforce:
 
-| **Invariant** | **Meaning** |- 
-|---------------|-------------|- 
-| **Append-Only** | Entries cannot be modified or deletedFast-Forward OnlyNo rebases, no force pushes |- 
-| **Deterministic Replay** | Identical inputs → identical state |- 
-| **Authenticated Entries** | All entries cryptographically signed |- 
-| **Policy Enforcement** | Programmable rules gate entry acceptance |- 
-| **Temporal Monotonicity** | Timestamps never regress |- 
-| **Namespace Isolation** | Ledgers are independent |
+| Invariant | Meaning |
+|---|---|
+| Append-Only | Entries cannot be modified or deleted |
+| Fast-Forward Only | No rebases, no force pushes |
+| Deterministic Replay | Identical inputs → identical state |
+| Authenticated Entries | All entries are cryptographically signed |
+| Policy Enforcement | Programmable rules gate entry acceptance |
+| Temporal Monotonicity | Timestamps never regress |
+| Namespace Isolation | Ledgers are independent |
 
 ## Quick Start
 
@@ -136,6 +137,7 @@ git ledger verify --ref refs/_ledger/prod/deploys
 ## Documentation
 
 | Document | Purpose |
+|---|---|
 | SPEC.md | Formal specification and invariants |
 | MODEL.md | Mathematical state-transition model |
 | ARCHITECTURE.md | System design and layer responsibilities |
@@ -226,14 +228,14 @@ Reporting issues -->
 
 ## License
 
-MIT - With Ethical Promise. © J. Kirby Ross- 
+MIT - With Ethical Promise. © J. Kirby Ross
 See [LICENSE](./LICENSE) for details.
 
 ---
 
 ## Project Status
 
-Current Version: 0.1.0 (Draft Specification)- 
+Current Version: 0.1.0 (Draft Specification)
 Roadmap:
 
 - [x] ✅ Specification finalized

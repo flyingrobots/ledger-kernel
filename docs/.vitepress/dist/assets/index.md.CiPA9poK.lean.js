@@ -1,0 +1,1 @@
+import{_ as i,c as r,o as a,ag as t}from"./chunks/framework.0pnsWLZ9.js";const h=JSON.parse('{"title":"Ledger-Kernel","description":"","frontmatter":{},"headers":[],"relativePath":"index.md","filePath":"index.md"}'),l={name:"index.md"};function n(o,e,s,d,c,p){return a(),r("div",null,[...e[0]||(e[0]=[t("",7)])])}const u=i(l,[["render",n]]);export{h as __pageData,u as default};

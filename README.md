@@ -276,6 +276,6 @@ git mind query "show me all TODO items"
 ## License
 
 MIT License (_with Ethical Use Clause_) · **© 2025 J. Kirby Ross**  
-_See [`LICENSE`](./LICENSE) and [`NOTICE`](./NOTICE.m) for terms._
+_See [`LICENSE`](./LICENSE) and [`NOTICE`](./NOTICE.md) for terms._
 
 > _“Provenance without clutter. Policy as infrastructure. Zero SaaS, zero guesswork.”_

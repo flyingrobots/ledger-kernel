@@ -15,6 +15,12 @@ It adds deterministic replay, cryptographic attestation, and programmable policy
 
 It uses existing `.git` storage, requiring no daemons or databases. It enforces fast-forward-only semantics to ensure history is immutable and guarantees deterministic replay, where identical input always yields identical state. Every entry is attested for non-repudiable authorship, and the system supports WASM-based policies for validation.
 
+✅ Is just Git! No custom storage, no daemons, just `.git`.
+✅ Enforces fast-forward-only semantics. History is immutable by design.
+✅ Provides deterministic replay. Same entries = same state, always.
+✅ Cryptographically attests every entry. Non-repudiable authorship.
+✅ Supports programmable policies. WASM-based rules for entry validation.
+
 ### Why Use It?
 
 #### The Problem
@@ -61,19 +67,34 @@ graph BT
 
 The architecture is layered. The Kernel Spec defines the formal model and invariants. [`libgitledger`](https://github.com/flyingrobots/libgitledger) implements those rules in portable C. Adapters connect to Git, WASM policy engines, and RPC daemons. Edges (like [Shiplog](https://github.com/flyingrobots/shiplog), [Wesley](https://github.com/flyingrobots/wesley), [Git-Mind](https://github.com/neuroglyph/git-mind)) apply them to real-world domains. Finally, UIs—CLIs, TUIs, and dashboards—wrap the edges for human use.
 
----
+- Kernel Spec — Formal model, invariants, compliance tests
+- `libgitledger` — Portable C implementation with FFI bindings
+- Adapters — Git (`libgit2`), WASM policy VM, RPC daemon
+- UIs — CLIs, TUIs, web dashboards
+- Edges — Domain-specific tools ([Shiplog](https://github.com/flyingrobots/shiplog), [Wesley](https://github.com/flyingrobots/Wesley), [Git-Mind](http://github.com/neuroglyph/git-mind))
+ 
 
 ## Core Invariants
 
-**Append-Only:** Entries cannot be modified or deleted.  
-**Fast-Forward Only:** No rebases or force pushes.  
-**Deterministic Replay:** Identical inputs always produce identical state.  
-**Authenticated Entries:** Every entry is cryptographically signed.  
-**Policy Enforcement:** Programmable rules gate entry acceptance.  
-**Temporal Monotonicity:** Timestamps never regress.  
-**Namespace Isolation:** Ledgers remain self-contained.  
-
----
+| Invariant | Meaning |
+|---|---|
+| Append-Only | Entries cannot be modified or deleted |
+| Fast-Forward Only | No rebases, no force pushes |
+| Deterministic Replay | Identical inputs → identical state |
+| Authenticated Entries | All entries are cryptographically signed |
+| Policy Enforcement | Programmable rules gate entry acceptance |
+| Temporal Monotonicity | Timestamps never regress |
+| Namespace Isolation | Ledgers are independent |
+ 
+| Invariant | Meaning |
+|---|---|
+| Append-Only | Entries cannot be modified or deleted |
+| Fast-Forward Only | No rebases, no force pushes |
+| Deterministic Replay | Identical inputs → identical state |
+| Authenticated Entries | All entries are cryptographically signed |
+| Policy Enforcement | Programmable rules gate entry acceptance |
+| Temporal Monotonicity | Timestamps never regress |
+| Namespace Isolation | Ledgers are independent |
 
 ## Quick Start
 
@@ -108,12 +129,42 @@ The architecture is layered. The Kernel Spec defines the formal model and invari
 
 ## Documentation
 
-[**SPEC.md**](./SPEC.md): Formal specification and invariants   
-[**MODEL.md**](./MODEL.md): Mathematical state-transition model   
-[**ARCHITECTURE.md:**](./ARCHITECTURE.md) System design and layering   
-[**IMPLEMENTATION.md:**](./IMPLEMENTATION.md) Reference C implementation details   
-[**REFERENCE.md:**](./REFERENCE.md) Language-neutral API contract   
-[**COMPLIANCE.md:**](./COMPLIACE.md) Test suite and conformance criteria   
+| Document | Purpose |
+|---|---|
+| SPEC.md | Formal specification and invariants |
+| MODEL.md | Mathematical state-transition model |
+| ARCHITECTURE.md | System design and layer responsibilities |
+| IMPLEMENTATION.md | libgitledger implementation details |
+| REFERENCE.md | Language-neutral API contract |
+| COMPLIANCE.md | Test suite and conformance criteria |
+
+## Edge Systems (Art Built on Ledger-Kernel)
+
+### 🚢 Shiplog
+
+> *Deployment provenance without SaaS*
+
+```bash
+git shiplog run -- "kubectl apply -f deploy.yaml"
+```
+
+- Captures `$PWD`, `$USER`, `$HOSTNAME`, `exit` code
+- Signs with SSH key
+- Appends to ledger in `.git`
+- Zero external dependencies
+
+### 🧠 Git-Mind
+
+> *Knowledge graphs in Git*
+
+```bash
+git mind ingest notes/
+git mind query "show me all TODO items"
+```
+
+- RDF triples stored as ledger entries
+- Deterministic graph replay
+- SPARQL-like queries
 
 ## Security Model
 
@@ -147,7 +198,7 @@ Compliance levels progress from Core (eight mandatory invariants) to Verified (i
 
 ### v0.1.0 (Draft Specification)
 
-The specification is finalized (✅). 
+The specification is finalized (✅).  
 The [`libgitledger`](https://github.com/flyingrobots/libgitledger) reference implementation and the compliance test suite are both in progress (🚧).  
 [Shiplog](https://github.com/flyingrobots/shiplog) integration using libgitledger and the WASM policy engine are planned for the future (🔜).  
 
@@ -235,6 +286,6 @@ git mind query "show me all TODO items"
 ## License
 
 MIT License (_with Ethical Use Clause_) · **© 2025 J. Kirby Ross**  
-_See [`LICENSE`](./LICENSE.md) and [`NOTICE`](./NOTICE) for terms._
+_See [`LICENSE`](./LICENSE) and [`NOTICE`](./NOTICE.m) for terms._
 
 > _“Provenance without clutter. Policy as infrastructure. Zero SaaS, zero guesswork.”_

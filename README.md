@@ -14,7 +14,6 @@ Unlike blockchains or SaaS audit logs, **Ledger-Kernel is just Git**.
 It adds deterministic replay, cryptographic attestation, and programmable policy enforcement without introducing new infrastructure.
 
 It uses existing `.git` storage, requiring no daemons or databases. It enforces fast-forward-only semantics to ensure history is immutable and guarantees deterministic replay, where identical input always yields identical state. Every entry is attested for non-repudiable authorship, and the system supports WASM-based policies for validation.
-
 ✅ Is just Git! No custom storage, no daemons, just `.git`.
 ✅ Enforces fast-forward-only semantics. History is immutable by design.
 ✅ Provides deterministic replay. Same entries = same state, always.
@@ -72,20 +71,10 @@ The architecture is layered. The Kernel Spec defines the formal model and invari
 - Adapters — Git (`libgit2`), WASM policy VM, RPC daemon
 - UIs — CLIs, TUIs, web dashboards
 - Edges — Domain-specific tools ([Shiplog](https://github.com/flyingrobots/shiplog), [Wesley](https://github.com/flyingrobots/Wesley), [Git-Mind](http://github.com/neuroglyph/git-mind))
- 
 
 ## Core Invariants
 
-| Invariant | Meaning |
-|---|---|
-| Append-Only | Entries cannot be modified or deleted |
-| Fast-Forward Only | No rebases, no force pushes |
-| Deterministic Replay | Identical inputs → identical state |
-| Authenticated Entries | All entries are cryptographically signed |
-| Policy Enforcement | Programmable rules gate entry acceptance |
-| Temporal Monotonicity | Timestamps never regress |
-| Namespace Isolation | Ledgers are independent |
- 
+Every compliant implementation **MUST** enforce:
 | Invariant | Meaning |
 |---|---|
 | Append-Only | Entries cannot be modified or deleted |

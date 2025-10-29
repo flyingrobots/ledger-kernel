@@ -1,5 +1,7 @@
 # Ledger-Kernel
 
+[![Docs (VitePress)](https://github.com/flyingrobots/ledger-kernel/actions/workflows/docs.yml/badge.svg)](https://flyingrobots.github.io/ledger-kernel/) [![Site](https://img.shields.io/badge/docs-site-blue?logo=github)](https://flyingrobots.github.io/ledger-kernel/)
+
 **Git-native, cryptographically verifiable, append-only ledgers with policy enforcement.**
 
 <img alt="ledger-kernel" src="https://github.com/user-attachments/assets/1b0a40d8-0cac-44c5-800f-f756f0a6825d" align="right" height="500"/>

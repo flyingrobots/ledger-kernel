@@ -130,7 +130,7 @@ Every compliant implementation **MUST** enforce:
 
 ## Edge Systems (Art Built on Ledger-Kernel)
 
-### 🚢 Shiplog
+### 🚢 [Shiplog](https://github.com/flyingrobots/shiplog)
 
 > *Deployment provenance without SaaS*
 
@@ -143,7 +143,7 @@ git shiplog run -- "kubectl apply -f deploy.yaml"
 - Appends to ledger in `.git`
 - Zero external dependencies
 
-### 🧠 Git-Mind
+### 🧠 [Git-Mind](https://github.com/neuroglyph/git-mind)
 
 > *Knowledge graphs in Git*
 
@@ -251,7 +251,7 @@ Banish drift. Never think about migrations again. Describe your shapes once and 
 
 _Go on, deploy on a Friday._
 
-### 🧠 Git-Mind • Knowledge Graphs in Git
+### 🧠 [Git-Mind](https://github.com/neuroglyph/git-mind) • Knowledge Graphs in Git
 
 <img alt="git-mind" src="https://github.com/user-attachments/assets/96af151b-cc1e-454f-9090-fbe96bcd79d4" width="200" align="right" />
 

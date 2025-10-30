@@ -8,6 +8,8 @@
 
   /* VitePress palette overrides (light) */
   --vp-c-bg: var(--lk-bg);
+  --vp-c-bg-elv: var(--lk-bg);    /* elevated surfaces (sidebar/aside) */
+  --vp-c-bg-alt: var(--lk-bg);
   --vp-c-bg-soft: color-mix(in oklch, var(--lk-bg) 94%, black);
 
   /* Use teal as brand (links, buttons) */
@@ -48,6 +50,15 @@
 /* Optional: soften feature cards on the cream bg */
 .VPFeature .box {
   background: var(--vp-c-bg-soft);
+}
+
+/* Ensure sidebar/outline use the same background */
+.VPSidebar {
+  background-color: var(--vp-c-bg);
+}
+
+.VPDocAside {
+  background-color: var(--vp-c-bg);
 }
 
 /* Keep dark theme defaults (only tweak brand for contrast) */

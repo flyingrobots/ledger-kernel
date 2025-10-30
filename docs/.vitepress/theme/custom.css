@@ -32,18 +32,26 @@
 
 /* Make the hero image larger on desktop */
 :root {
-  /* Tweak this to taste or replace with exact px */
-  --lk-hero-image-width: clamp(280px, 32vw, 560px);
+  /* Tweak these to taste */
+  --lk-hero-image-width: clamp(320px, 34vw, 640px);
+  /* Aspect ratio = width / height. For 1024x1536, use 2/3. */
+  --lk-hero-aspect: 2 / 3;
+  /* cover = fill + crop; contain = no crop + letterbox */
+  --lk-hero-fit: cover;
 }
 
 .VPHomeHero .image {
-  max-width: var(--lk-hero-image-width);
   width: var(--lk-hero-image-width);
+  max-width: var(--lk-hero-image-width);
+  aspect-ratio: var(--lk-hero-aspect);
+  overflow: hidden;
 }
 
 .VPHomeHero .image img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: var(--lk-hero-fit);
+  object-position: center center;
   display: block;
 }
 

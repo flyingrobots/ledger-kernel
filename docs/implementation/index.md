@@ -12,7 +12,7 @@ Version: 0.1.0
 
 ## Abstract
 
-This paper presents `libgitledger`, a portable C reference implementation of a verifiable, append‑only ledger that operates natively within a standard Git repository. The library instantiates the formal model described in [`MODEL.md`](./MODEL.md) and adheres to the invariants set forth in [`SPEC.md`](./SPEC.md) by constraining a designated Git reference to fast‑forward only evolution, serializing entries using a canonical JSON encoding, and binding those entries to cryptographic attestations.
+This paper presents `libgitledger`, a portable C reference implementation of a verifiable, append‑only ledger that operates natively within a standard Git repository. The library instantiates the formal model described in [`MODEL`](../model/) and adheres to the invariants set forth in [`SPEC`](../spec/) by constraining a designated Git reference to fast‑forward only evolution, serializing entries using a canonical JSON encoding, and binding those entries to cryptographic attestations.
 
 Policy compliance is enforced through a deterministic evaluation interface that admits both native predicates and an optional, fuel‑metered WebAssembly policy engine.
 
@@ -24,7 +24,7 @@ We describe the system architecture, data paths for append, replay, and verify o
 
 ## 1. Introduction
 
-Git’s content‑addressed object model, together with its global reference namespace, furnishes a robust foundation for provenance. Yet, its affordances for branching and history rewriting introduce ambiguity for applications that require a totally ordered, non‑repudiable history. `libgitledger` reconciles this tension by erecting a deterministic state machine on top of a constrained Git reference whose history evolves exclusively via fast‑forward commits. Each commit encodes a single ledger entry, and the entire sequence forms a pure, replayable computation whose output state is uniquely determined by the ordered set of entries. This paper explains how the implementation realizes that model and exposes a minimal, language‑agnostic API compatible with [`REFERENCE.md`](./REFERENCE.md).
+Git’s content‑addressed object model, together with its global reference namespace, furnishes a robust foundation for provenance. Yet, its affordances for branching and history rewriting introduce ambiguity for applications that require a totally ordered, non‑repudiable history. `libgitledger` reconciles this tension by erecting a deterministic state machine on top of a constrained Git reference whose history evolves exclusively via fast‑forward commits. Each commit encodes a single ledger entry, and the entire sequence forms a pure, replayable computation whose output state is uniquely determined by the ordered set of entries. This paper explains how the implementation realizes that model and exposes a minimal, language‑agnostic API compatible with the [`Reference API`](../reference/).
 
 The overarching design thesis is that **a ledger should be a conservative extension of infrastructure developers already trust**. By forming the kernel using Git, a well-trusted, battle-worn powerhouse, without introducing bespoke storage or a privileged daemon, `libgitledger` inherits well‑understood operational semantics while adding determinism, cryptographic attestation, and verifiable policy enforcement. The result is a compact, auditable implementation that can be linked into a wide range of host systems.
 
@@ -227,7 +227,7 @@ The evaluation of `libgitledger` rests on three pillars.
 
 **Unit tests** validate that entry serialization round‑trips faithfully and that computed hashes are invariant under platform variation, including differences in endianness and C library implementations.
 
-**Compliance tests** mirror [`COMPLIANCE.md`](./COMPLIANCE.md) and [`SPEC.md`](./SPEC.md), asserting fast‑forward enforcement, policy gate correctness, attestation verification, and replay purity against a suite of golden repositories.
+**Compliance tests** mirror the [`COMPLIANCE`](../compliance/) and [`SPEC`](../spec/) documents, asserting fast‑forward enforcement, policy gate correctness, attestation verification, and replay purity against a suite of golden repositories.
 
 **Property‑based and fuzz testing** generate randomized sequences of valid and invalid entries to probe invariants and ensure that rejection cases are classified precisely.
 

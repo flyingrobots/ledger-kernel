@@ -2,9 +2,10 @@
 
 :root {
   /* TODO: replace these with your exact brand values */
-  --lk-bg: #f6f1e7;             /* light cream, to match hero background */
-  --lk-brand-orange: #e7692b;   /* logo orange (approx) */
-  --lk-brand-teal: #1a8a74;     /* logo teal (approx) */
+  /* Brand colors */
+  --lk-bg: #F6F1E7;             /* WHITE */
+  --lk-brand-orange: #F55F17;   /* ORANGE */
+  --lk-brand-teal: #00766C;     /* GREEN (brand primary) */
 
   /* VitePress palette overrides (light) */
   --vp-c-bg: var(--lk-bg);

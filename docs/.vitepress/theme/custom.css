@@ -90,7 +90,8 @@
 /* Tone down VitePress tip blocks (avoid bright green) */
 .custom-block.tip {
   background: var(--lk-surface);
-  border-color: var(--lk-brand-teal);
+  border: 1px solid var(--lk-divider);
+  border-left: 4px solid var(--lk-brand-teal);
 }
 .custom-block.tip .custom-block-title {
   color: var(--lk-brand-teal);
@@ -113,6 +114,12 @@
 .VPFeature .box {
   background: var(--lk-surface);
   border: 1px solid var(--lk-divider);
+}
+
+.VPFeature .box:hover,
+.VPFeature .box:focus-within {
+  border-color: var(--lk-divider);
+  box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 2px 8px rgba(0,0,0,.04);
 }
 
 /* Ensure sidebar/outline use the same background */

@@ -45,6 +45,7 @@
   max-width: var(--lk-hero-image-width);
   aspect-ratio: var(--lk-hero-aspect);
   overflow: hidden;
+  align-self: center; /* vertically center within hero layout */
 }
 
 .VPHomeHero .image img {
@@ -53,6 +54,11 @@
   object-fit: var(--lk-hero-fit);
   object-position: center center;
   display: block;
+}
+
+/* Nudge VitePress hero layout to vertically center both columns */
+.VPHomeHero .container {
+  align-items: center;
 }
 
 /* Optional: soften feature cards on the cream bg */

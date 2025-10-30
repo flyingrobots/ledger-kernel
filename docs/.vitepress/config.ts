@@ -7,22 +7,32 @@ export default withMermaid(defineConfig({
   description: 'Git-native, verifiable, append-only ledger specification',
   themeConfig: {
     nav: [
+      { text: 'Spec', link: '/spec/' },
+      { text: 'Model', link: '/model/' },
+      { text: 'Reference', link: '/reference/' },
+      { text: 'Architecture', link: '/architecture/' },
+      { text: 'Compliance', link: '/compliance/' },
+      { text: 'Implementation', link: '/implementation/' },
       { text: 'Modes', link: '/modes' },
       { text: 'Decisions', link: '/decisions' }
     ],
-    sidebar: [
-      {
-        text: 'Overview',
-        items: [
-          { text: 'Home', link: '/' },
-          { text: 'Modes', link: '/modes' },
-          { text: 'Decisions', link: '/decisions' }
-        ]
-      }
-    ]
+    // Minimal sidebar; single-page sections rely on nav. Add per-dir
+    // sidebars if/when sections become multi-page.
+    sidebar: {
+      '/': [
+        {
+          text: 'Overview',
+          items: [
+            { text: 'Home', link: '/' },
+            { text: 'Modes', link: '/modes' },
+            { text: 'Decisions', link: '/decisions' },
+            { text: 'Execution Checklist', link: '/checklist' }
+          ]
+        }
+      ]
+    }
   }
 }), {
-  // Mermaid plugin options
   mermaid: {
     theme: { light: 'default', dark: 'dark' },
     securityLevel: 'strict'

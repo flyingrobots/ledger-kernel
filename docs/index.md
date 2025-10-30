@@ -1,21 +1,41 @@
-# Ledger-Kernel
+---
+layout: home
+hero:
+  name: Ledger-Kernel
+  text: Git‑native, verifiable, append‑only ledger specification
+  tagline: Deterministic replay • Fast‑forward only • Cryptographic attestations • Deterministic WASM policy
+  image:
+    src: /images/hero.webp
+    alt: Ledger‑Kernel hero art
+  actions:
+    - theme: brand
+      text: Read the Spec
+      link: /spec/
+    - theme: alt
+      text: Architecture Overview
+      link: /architecture/
+features:
+  - title: Spec & Model
+    details: Formal invariants and a state‑transition model for deterministic replay.
+    link: /spec/
+  - title: Reference API
+    details: Language‑neutral API contract for interoperable implementations.
+    link: /reference/
+  - title: Compliance Suite
+    details: Mode‑aware fixtures and proofs for verifiable conformance.
+    link: /compliance/
+---
 
-A Git-native, cryptographically verifiable, append-only ledger specification.
+## Quick Links
 
-- Deterministic replay
-- Fast-forward only
-- Cryptographic attestations
-- Programmable policy enforcement (deterministic WASM)
+- [Spec](/spec/)
+- [Model](/model/)
+- [Reference](/reference/)
+- [Architecture](/architecture/)
+- [Compliance](/compliance/)
+- [Modes](/modes)
+- [Decisions](/decisions)
 
-## Specs
-
-This site mirrors the documents in the repo root for easier reading:
-
-- SPEC.md — Kernel invariants and normative behavior
-- MODEL.md — Formal model
-- REFERENCE.md — Language-neutral API
-- ARCHITECTURE.md — System design
-- COMPLIANCE.md — Test suite and conformance
-
-> Source of truth remains the Markdown files in the repo.
-
+::: tip Contributors
+For maintainers: the execution plan lives at the [Execution Checklist](/checklist).
+:::

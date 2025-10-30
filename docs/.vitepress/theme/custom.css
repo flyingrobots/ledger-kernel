@@ -1,0 +1,138 @@
+/* Custom theme palette for Ledger‑Kernel */
+
+:root {
+  /* Brand colors */
+  --lk-bg: #F6F1E7;             /* WHITE */
+  --lk-brand-orange: #F55F17;   /* ORANGE */
+  --lk-brand-teal: #00766C;     /* GREEN (brand primary) */
+
+  /* VitePress palette overrides (light) */
+  --vp-c-bg: var(--lk-bg);
+  --vp-c-bg-elv: var(--lk-bg);    /* elevated surfaces (sidebar/aside) */
+  --vp-c-bg-alt: var(--lk-bg);
+  --vp-c-bg-soft: color-mix(in oklch, var(--lk-bg) 96%, black);
+
+  /* Neutral surfaces and dividers tuned for the cream background */
+  --lk-surface: #F3EDE3;   /* cards / feature boxes */
+  --lk-divider: #E6DED2;   /* faint rules/borders */
+
+  /* Dividers and alt button tokens */
+  --vp-c-divider: var(--lk-divider);
+  --vp-button-alt-bg: var(--lk-surface);
+  --vp-button-alt-border: var(--lk-divider);
+  --vp-button-alt-text: #2b2b2b;
+  --vp-button-alt-hover-bg: color-mix(in oklch, var(--lk-surface) 92%, black);
+
+  /* Use teal as brand (links, buttons) */
+  --vp-c-brand-1: var(--lk-brand-teal);
+  --vp-c-brand-2: color-mix(in oklch, var(--lk-brand-teal) 85%, white);
+  --vp-c-brand-3: color-mix(in oklch, var(--lk-brand-teal) 70%, white);
+  --vp-c-brand-soft: color-mix(in oklch, var(--lk-brand-teal) 10%, white);
+
+  /* Buttons */
+  --vp-button-brand-bg: var(--lk-brand-teal);
+  --vp-button-brand-border: var(--lk-brand-teal);
+  --vp-button-brand-hover-bg: color-mix(in oklch, var(--lk-brand-teal) 85%, black);
+  --vp-button-brand-hover-border: color-mix(in oklch, var(--lk-brand-teal) 85%, black);
+}
+
+/* Accent some headings with orange */
+.VPHome .VPHomeHero .name {
+  color: var(--lk-brand-orange);
+}
+
+/* Make the hero image larger on desktop */
+:root {
+  /* Tweak these to taste */
+  --lk-hero-image-width: clamp(360px, 36vw, 720px);
+  /* Keep the hero image from exceeding viewport height */
+  --lk-hero-max-h: 72vh; /* cap visual height to 72% of viewport */
+  /* cover = fill + crop; contain = no crop + letterbox */
+  --lk-hero-fit: contain; /* logo: do not crop */
+}
+
+.VPHomeHero .image {
+  /* Natural aspect ratio; no cropping */
+  width: min(var(--lk-hero-image-width), 100%);
+  max-width: 100%;
+  align-self: center; /* vertically center within hero layout */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.VPHomeHero .image img {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  max-height: var(--lk-hero-max-h);
+  object-fit: var(--lk-hero-fit);
+  object-position: center center;
+  display: block;
+}
+
+/* Responsive tuning when hero stacks (narrow viewports) */
+@media (max-width: 960px) {
+  :root {
+    --lk-hero-image-width: min(58vw, 420px);
+    --lk-hero-max-h: 48vh;
+  }
+  .VPHomeHero {
+    padding-top: 1rem;
+    padding-bottom: 1.25rem;
+  }
+  .VPHomeHero .image {
+    margin-bottom: 0.75rem; /* clear heading below image */
+  }
+}
+
+/* Tone down VitePress tip blocks (avoid bright green) */
+.custom-block.tip {
+  background: var(--lk-surface);
+  border: 1px solid var(--lk-divider);
+  border-left: 4px solid var(--lk-brand-teal);
+}
+.custom-block.tip .custom-block-title {
+  color: var(--lk-brand-teal);
+}
+
+/* Nudge VitePress hero layout to vertically center both columns */
+.VPHomeHero {
+  /* Reduce default top/bottom whitespace */
+  padding-top: 1.25rem;
+  padding-bottom: 1.75rem;
+  margin-top: 0;
+}
+
+.VPHomeHero .container {
+  align-items: center;       /* vertically center columns */
+  min-height: auto;          /* avoid large default min-height pushing content down */
+}
+
+/* Optional: soften feature cards on the cream bg */
+.VPFeature .box {
+  background: var(--lk-surface);
+  border: 1px solid var(--lk-divider);
+}
+
+.VPFeature .box:hover,
+.VPFeature .box:focus-within {
+  border-color: var(--lk-divider);
+  box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 2px 8px rgba(0,0,0,.04);
+}
+
+/* Ensure sidebar/outline use the same background */
+.VPSidebar {
+  background-color: var(--vp-c-bg);
+}
+
+.VPDocAside {
+  background-color: var(--vp-c-bg);
+}
+
+/* Keep dark theme defaults (only tweak brand for contrast) */
+.dark {
+  --vp-c-brand-1: color-mix(in oklch, var(--lk-brand-teal) 85%, white);
+  --vp-c-brand-2: color-mix(in oklch, var(--lk-brand-teal) 70%, white);
+  --vp-c-brand-3: color-mix(in oklch, var(--lk-brand-teal) 60%, white);
+}

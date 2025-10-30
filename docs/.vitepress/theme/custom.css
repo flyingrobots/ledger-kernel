@@ -36,16 +36,23 @@
   --lk-hero-image-width: clamp(320px, 34vw, 640px);
   /* Aspect ratio = width / height. For 1024x1536, use 2/3. */
   --lk-hero-aspect: 2 / 3;
+  /* Keep the hero image from exceeding viewport height */
+  --lk-hero-max-h: 72vh; /* cap visual height to 72% of viewport */
   /* cover = fill + crop; contain = no crop + letterbox */
   --lk-hero-fit: cover;
 }
 
 .VPHomeHero .image {
-  width: var(--lk-hero-image-width);
-  max-width: var(--lk-hero-image-width);
+  /* Bound width both by vw-based target and by max height × aspect */
+  width: min(
+    var(--lk-hero-image-width),
+    calc(var(--lk-hero-max-h) * (2/3))
+  );
+  max-width: 100%;
   aspect-ratio: var(--lk-hero-aspect);
   overflow: hidden;
   align-self: center; /* vertically center within hero layout */
+  max-height: var(--lk-hero-max-h);
 }
 
 .VPHomeHero .image img {
@@ -59,8 +66,9 @@
 /* Nudge VitePress hero layout to vertically center both columns */
 .VPHomeHero {
   /* Reduce default top/bottom whitespace */
-  padding-top: 2rem;
-  padding-bottom: 2.5rem;
+  padding-top: 1.25rem;
+  padding-bottom: 1.75rem;
+  margin-top: 0;
 }
 
 .VPHomeHero .container {

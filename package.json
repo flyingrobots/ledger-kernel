@@ -5,8 +5,9 @@
   "type": "module",
   "description": "Git-native, verifiable, append-only ledger specification site",
   "scripts": {
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
+    "docs:sync": "bash scripts/sync_docs.sh",
+    "docs:dev": "bash scripts/sync_docs.sh && vitepress dev docs",
+    "docs:build": "bash scripts/sync_docs.sh && vitepress build docs",
     "docs:preview": "vitepress preview docs --port 5173"
   },
   "devDependencies": {

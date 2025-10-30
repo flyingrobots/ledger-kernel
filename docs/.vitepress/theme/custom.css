@@ -57,8 +57,15 @@
 }
 
 /* Nudge VitePress hero layout to vertically center both columns */
+.VPHomeHero {
+  /* Reduce default top/bottom whitespace */
+  padding-top: 2rem;
+  padding-bottom: 2.5rem;
+}
+
 .VPHomeHero .container {
-  align-items: center;
+  align-items: center;       /* vertically center columns */
+  min-height: auto;          /* avoid large default min-height pushing content down */
 }
 
 /* Optional: soften feature cards on the cream bg */

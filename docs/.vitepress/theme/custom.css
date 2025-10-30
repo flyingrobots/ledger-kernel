@@ -28,6 +28,23 @@
   color: var(--lk-brand-orange);
 }
 
+/* Make the hero image larger on desktop */
+:root {
+  /* Tweak this to taste or replace with exact px */
+  --lk-hero-image-width: clamp(280px, 32vw, 560px);
+}
+
+.VPHomeHero .image {
+  max-width: var(--lk-hero-image-width);
+  width: var(--lk-hero-image-width);
+}
+
+.VPHomeHero .image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 /* Optional: soften feature cards on the cream bg */
 .VPFeature .box {
   background: var(--vp-c-bg-soft);
@@ -39,4 +56,3 @@
   --vp-c-brand-2: color-mix(in oklch, var(--lk-brand-teal) 70%, white);
   --vp-c-brand-3: color-mix(in oklch, var(--lk-brand-teal) 60%, white);
 }
-

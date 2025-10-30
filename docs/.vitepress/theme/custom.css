@@ -1,7 +1,6 @@
 /* Custom theme palette for Ledger‑Kernel */
 
 :root {
-  /* TODO: replace these with your exact brand values */
   /* Brand colors */
   --lk-bg: #F6F1E7;             /* WHITE */
   --lk-brand-orange: #F55F17;   /* ORANGE */

@@ -16,25 +16,9 @@ export default withMermaid(defineConfig({
       { text: 'Modes', link: '/modes' },
       { text: 'Decisions', link: '/decisions' }
     ],
+    // Minimal sidebar; single-page sections rely on nav. Add per-dir
+    // sidebars if/when sections become multi-page.
     sidebar: {
-      '/spec/': [
-        { text: 'Specification', items: [ { text: 'Spec v1.0.0', link: '/spec/' } ] }
-      ],
-      '/model/': [
-        { text: 'Model', items: [ { text: 'Formal Model', link: '/model/' } ] }
-      ],
-      '/reference/': [
-        { text: 'API', items: [ { text: 'Reference API', link: '/reference/' } ] }
-      ],
-      '/architecture/': [
-        { text: 'Architecture', items: [ { text: 'System Architecture', link: '/architecture/' } ] }
-      ],
-      '/compliance/': [
-        { text: 'Compliance', items: [ { text: 'Compliance Suite', link: '/compliance/' } ] }
-      ],
-      '/implementation/': [
-        { text: 'Implementation', items: [ { text: 'libgitledger details', link: '/implementation/' } ] }
-      ],
       '/': [
         {
           text: 'Overview',

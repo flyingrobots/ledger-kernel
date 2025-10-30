@@ -7,7 +7,6 @@ node_modules/
 docs/.vitepress/dist/
 .vitepress/dist/
 docs/.vitepress/cache/
-.vitepress/dist/
 
 # macOS system files
 .AppleDouble

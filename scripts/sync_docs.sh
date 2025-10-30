@@ -3,6 +3,19 @@ set -euo pipefail
 
 root_dir=$(cd "$(dirname "$0")/.." && pwd)
 
+# Pre-check required source files so failures are clear
+required=(SPEC.md MODEL.md REFERENCE.md ARCHITECTURE.md COMPLIANCE.md)
+missing=0
+for f in "${required[@]}"; do
+  if [ ! -f "$root_dir/$f" ]; then
+    echo "ERROR: Required doc $f not found" >&2
+    missing=1
+  fi
+done
+if [ "$missing" -ne 0 ]; then
+  exit 1
+fi
+
 mkdir -p "$root_dir/docs/spec" \
          "$root_dir/docs/model" \
          "$root_dir/docs/reference" \
@@ -23,4 +36,3 @@ if [ -f "$root_dir/IMPLEMENTATION.md" ]; then
 fi
 
 echo "Synced core docs into docs/ sections."
-

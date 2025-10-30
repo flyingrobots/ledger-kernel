@@ -150,4 +150,4 @@ This specification is informed by and related to the following external works:
 
 1.  Chacon, S., & Straub, B. (2014). Git Internals. In *Pro Git* (2nd ed.). Apress.
 2.  Ledger. (n.d.). *RFC 001: Cryptographic Attestations for SCM*. Retrieved from **[https://ledger.website/rfc-001.html](https://ledger.website/rfc-001.html)**
-3.  Reproducible Builds Project. (n.d.). **[Deterministic Build Systems](https://reproducible-builds.org/docs/deterministic-build-systems/)**. Retrieved October 27, 2025, from https://reproducible-builds.org/docs/deterministic-build-systems/
+3.  Reproducible Builds Project. (n.d.). **[Deterministic Build Systems](https://reproducible-builds.org/docs/deterministic-build-systems/)**. Retrieved October 27, 2025, from <https://reproducible-builds.org/docs/deterministic-build-systems/>

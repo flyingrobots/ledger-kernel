@@ -41,13 +41,13 @@ Each layer in the stack has a distinct and well-defined set of responsibilities.
 
 ### 2.1 Ledger-Kernel (Specification + Model)
 
-This foundational layer defines the axiomatic properties of the system. Here, we define the abstract rules that must always be true for a ledger to be considered valid. Its responsibilities include defining the **semantic and mathematical invariants** (see [`SPEC.md`](./SPEC.md), and [`MODEL.md`](./MODEL.md)), specifying the canonical reference layout and data schemas, and provide the compliance suite and defining all proof obligations for implementations.
+This foundational layer defines the axiomatic properties of the system. Here, we define the abstract rules that must always be true for a ledger to be considered valid. Its responsibilities include defining the **semantic and mathematical invariants** (see [`SPEC`](../spec/), and [`MODEL`](../model/)), specifying the canonical reference layout and data schemas, and provide the compliance suite and defining all proof obligations for implementations.
 
 ### 2.2 `libgitledger` (Core Runtime)
 
 This layer is the core runtime, a concrete and portable C implementation of the abstract specification. It implements the logic for Git object creation, reference management, and invariant validation.
 
-Its role is to expose the canonical, language-neutral Reference API (see [`REFERENCE.md`](./REFERENCE.md)).
+Its role is to expose the canonical, language-neutral Reference API (see [`Reference API`](../reference/)).
 
 > [!tip] What if AI could generate and emit compliance proofs for every mutating operation?
 

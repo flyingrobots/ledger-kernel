@@ -11,7 +11,7 @@ Version: 0.1.0
 
 ## 1. Purpose
 
-The compliance suite ensures that any implementation of the **Ledger-Kernel** (e.g., `libgitledger`, `ledger-core-rust`, `ledger-js`) adheres to the invariants, semantics, and deterministic behavior defined in [`SPEC.md`](./SPEC.md) and [`MODEL.md`](./MODEL.md).
+The compliance suite ensures that any implementation of the **Ledger-Kernel** (e.g., `libgitledger`, `ledger-core-rust`, `ledger-js`) adheres to the invariants, semantics, and deterministic behavior defined in [`SPEC`](../spec/) and [`MODEL`](../model/).
 
 A compliant implementation must **pass all mandatory tests** and **expose proofs or logs**
 demonstrating correctness.

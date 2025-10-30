@@ -60,6 +60,21 @@
   display: block;
 }
 
+/* Responsive tuning when hero stacks (narrow viewports) */
+@media (max-width: 960px) {
+  :root {
+    --lk-hero-image-width: min(60vw, 420px);
+    --lk-hero-max-h: 48vh;
+  }
+  .VPHomeHero {
+    padding-top: 1rem;
+    padding-bottom: 1.25rem;
+  }
+  .VPHomeHero .image {
+    margin-bottom: 0.75rem; /* clear heading below image */
+  }
+}
+
 /* Nudge VitePress hero layout to vertically center both columns */
 .VPHomeHero {
   /* Reduce default top/bottom whitespace */

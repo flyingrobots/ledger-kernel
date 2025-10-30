@@ -33,31 +33,28 @@
 /* Make the hero image larger on desktop */
 :root {
   /* Tweak these to taste */
-  --lk-hero-image-width: clamp(320px, 34vw, 640px);
-  /* Aspect ratio = width / height. For 1024x1536, use 2/3. */
-  --lk-hero-aspect: 2 / 3;
+  --lk-hero-image-width: clamp(360px, 36vw, 720px);
   /* Keep the hero image from exceeding viewport height */
   --lk-hero-max-h: 72vh; /* cap visual height to 72% of viewport */
   /* cover = fill + crop; contain = no crop + letterbox */
-  --lk-hero-fit: cover;
+  --lk-hero-fit: contain; /* logo: do not crop */
 }
 
 .VPHomeHero .image {
-  /* Bound width both by vw-based target and by max height × aspect */
-  width: min(
-    var(--lk-hero-image-width),
-    calc(var(--lk-hero-max-h) * (2/3))
-  );
+  /* Natural aspect ratio; no cropping */
+  width: min(var(--lk-hero-image-width), 100%);
   max-width: 100%;
-  aspect-ratio: var(--lk-hero-aspect);
-  overflow: hidden;
   align-self: center; /* vertically center within hero layout */
-  max-height: var(--lk-hero-max-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .VPHomeHero .image img {
-  width: 100%;
-  height: 100%;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  max-height: var(--lk-hero-max-h);
   object-fit: var(--lk-hero-fit);
   object-position: center center;
   display: block;

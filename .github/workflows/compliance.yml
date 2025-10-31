@@ -1,0 +1,24 @@
+name: Compliance Harness (noop)
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  harness-noop:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run harness in noop mode
+        run: |
+          bash tests/harness/run_tests.sh --impl noop --mode branch --junit junit.xml
+      
+      - name: Upload JUnit (summary)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: compliance-junit
+          path: junit.xml

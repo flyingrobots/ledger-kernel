@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://flyingrobots.dev/ledger-kernel/schemas/testcase.schema.json",
+  "title": "Compliance Test Case",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string" },
+    "goal": { "type": "string" },
+    "mode": { "type": "string", "enum": ["branch", "notes", "private"] },
+    "pre_state": { "type": ["object", "null"] },
+    "entries": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "policies": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "expect": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "result": { "type": "string", "enum": ["success", "error"] },
+        "error": { "type": ["string", "null"] }
+      },
+      "required": ["result"]
+    }
+  },
+  "required": ["id", "goal", "mode", "entries", "expect"]
+}
+

@@ -21,6 +21,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -31,7 +35,7 @@ jobs:
 
       - name: Build VitePress site
         env:
-          DOCS_BASE: /ledger-kernel/
+          DOCS_BASE: ${{ steps.pages.outputs.base_path }}
         run: npm run docs:build
 
       - name: Upload artifact
@@ -49,4 +53,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-

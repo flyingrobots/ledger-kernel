@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Minimal proof verifier skeleton for the Ledger‑Kernel compliance harness.
+Minimal proof verifier skeleton for the Ledger-Kernel compliance harness.
 
 CLI:
   verify_proofs.py --proof-dir <dir> --case <yaml> --mode <branch|notes|private>
@@ -9,30 +9,50 @@ Current behavior:
   - Validates that the proof directory exists (or is empty if not provided).
   - Prints a short summary and exits 0. No deep checks yet.
 
-Follow‑ups will add:
+Follow-ups will add:
   - JSON Schema validation for append/attest/policy/replay proofs
   - Deterministic replay digest recomputation and comparison
-  - Invariant checks (append‑only, FF‑only, temporal monotonicity, etc.)
+  - Invariant checks (append-only, FF-only, temporal monotonicity, etc.)
 """
 
 from __future__ import annotations
 import argparse
 import os
 import sys
+from typing import Optional
+try:
+    import yaml  # type: ignore
+except Exception:  # pragma: no cover
+    yaml = None
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="Ledger‑Kernel proof verifier (skeleton)")
+    p = argparse.ArgumentParser(description="Ledger-Kernel proof verifier (skeleton)")
     p.add_argument("--proof-dir", default="", help="Directory containing emitted proofs")
     p.add_argument("--case", required=True, help="Path to the test case YAML")
     p.add_argument("--mode", default="branch", choices=["branch", "notes", "private"], help="Ledger mode")
     return p.parse_args(argv)
 
 
+def _validate_case_yaml(case_path: str) -> Optional[str]:
+    """Return None if YAML loads, else an error string."""
+    if yaml is None:
+        return "PyYAML not available; cannot parse case file"
+    try:
+        with open(case_path, "r", encoding="utf-8") as fh:
+            _doc = yaml.safe_load(fh)
+    except FileNotFoundError:
+        return "case file not found"
+    except Exception as e:  # YAML/IO errors
+        return f"failed to parse YAML: {e}"
+    return None
+
+
 def main(argv: list[str]) -> int:
     args = parse_args(argv)
 
-    proof_dir_arg = args.__dict__["proof_dir"]
+    proof_dir_arg = args.proof_dir or ""
+    proof_dir: Optional[str]
     if proof_dir_arg:
         if not os.path.isdir(proof_dir_arg):
             print(f"ERROR: proof dir not found: {proof_dir_arg}", file=sys.stderr)
@@ -40,6 +60,15 @@ def main(argv: list[str]) -> int:
         proof_dir = proof_dir_arg
     else:
         proof_dir = None
+
+    # Validate case file exists and is readable; attempt to parse YAML
+    if not os.path.isfile(args.case):
+        print(f"ERROR: case file not found: {args.case}", file=sys.stderr)
+        return 2
+    err = _validate_case_yaml(args.case)
+    if err:
+        print(f"ERROR: {err}", file=sys.stderr)
+        return 2
 
     print("verify_proofs: (skeleton)")
     print(f"- case: {args.case}")
@@ -50,4 +79,3 @@ def main(argv: list[str]) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main(sys.argv[1:]))
-

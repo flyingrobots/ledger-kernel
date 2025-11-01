@@ -3,19 +3,94 @@
   "$id": "https://flyingrobots.dev/ledger-kernel/schemas/testcase.schema.json",
   "title": "Compliance Test Case",
   "type": "object",
+  "description": "Top-level description of a single compliance test case for the Ledger Kernel.",
   "additionalProperties": false,
+  "$defs": {
+    "Account": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "description": "Account identifier" },
+        "balances": {
+          "type": "object",
+          "description": "Map of currency code -> balance (integer or numeric string)",
+          "patternProperties": {
+            "^[A-Z][A-Z0-9]{2,}$": {
+              "oneOf": [
+                { "type": "integer" },
+                { "type": "number" },
+                { "type": "string", "pattern": "^-?[0-9]+(\\.[0-9]+)?$" }
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "metadata": { "type": "object", "additionalProperties": true }
+      },
+      "required": ["id", "balances"]
+    },
+    "PolicyRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ruleId": { "type": "string" },
+        "condition": { "type": "string" }
+      },
+      "required": ["ruleId", "condition"]
+    }
+  },
   "properties": {
     "id": { "type": "string" },
     "goal": { "type": "string" },
-    "mode": { "type": "string", "enum": ["branch", "notes", "private"] },
-    "pre_state": { "type": ["object", "null"] },
+    "mode": { "type": "string", "enum": ["branch", "notes", "private"], "description": "Must match the --mode passed to the harness." },
+    "timestamp": { "type": "string", "format": "date-time", "description": "Optional creation timestamp (RFC 3339)" },
+    "pre_state": {
+      "description": "Optional initial ledger state before applying entries.",
+      "type": ["object", "null"],
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "accounts": { "type": "array", "items": { "$ref": "#/$defs/Account" } },
+            "metadata": { "type": "object", "additionalProperties": true }
+          },
+          "required": ["accounts"]
+        }
+      ]
+    },
     "entries": {
       "type": "array",
-      "items": { "type": "object" }
+      "description": "Ordered list of actions/inputs for the test.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "steps": { "type": "array", "items": { "type": "string" } },
+          "expected": { "type": ["string", "object"] },
+          "tags": { "type": "array", "items": { "type": "string" } }
+        },
+        "required": ["id", "title", "expected"]
+      }
     },
     "policies": {
       "type": "array",
-      "items": { "type": "object" }
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "severity": { "type": "string", "enum": ["low", "medium", "high"] },
+          "rules": { "type": "array", "items": { "$ref": "#/$defs/PolicyRule" } }
+        },
+        "required": ["id", "name", "rules"]
+      }
     },
     "expect": {
       "type": "object",
@@ -29,4 +104,3 @@
   },
   "required": ["id", "goal", "mode", "entries", "expect"]
 }
-

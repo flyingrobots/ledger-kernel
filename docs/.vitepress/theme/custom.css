@@ -149,5 +149,15 @@
 .VPNavBar .VPNavBarMenuLink,
 .VPNavBar .title,
 .VPNavBar .VPNavBarMenuGroup .trigger {
-  color: var(--vp-c-text-1);
+  color: var(--vp-c-text-1) !important;
 }
+
+/* Ensure hero copy uses solid, readable text color */
+.VPHero .text,
+.VPHero .tagline {
+  color: var(--vp-c-text-1) !important;
+}
+
+/* Strengthen default link color for readability on light cream */
+a { color: var(--vp-c-brand-1); }
+a:hover { color: var(--vp-c-brand-2); }

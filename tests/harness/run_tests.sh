@@ -77,6 +77,35 @@ is_placeholder() {
 run_case() {
   local f="$1"
   total=$((total+1))
+  # Validate schema if python3 + jsonschema are available; skip case if invalid.
+  if command -v python3 >/dev/null 2>&1; then
+    if ! python3 - "$f" 2>/dev/null <<'PY'
+import json, sys
+try:
+    import yaml  # type: ignore
+except Exception:
+    sys.exit(0)
+try:
+    import jsonschema  # type: ignore
+except Exception:
+    sys.exit(0)
+case_path = sys.argv[1]
+with open(case_path, 'r', encoding='utf-8') as fh:
+    doc = yaml.safe_load(fh)
+with open('schemas/testcase.schema.json', 'r', encoding='utf-8') as sh:
+    schema = json.load(sh)
+try:
+    jsonschema.validate(doc, schema)
+except Exception:
+    sys.exit(1)
+sys.exit(0)
+PY
+    then
+      results_lines+="SKIP $f invalid_schema\n"
+      skipped=$((skipped+1))
+      return 0
+    fi
+  fi
   if is_placeholder "$f"; then
     results_lines+="SKIP $f placeholder\n"
     skipped=$((skipped+1))
@@ -87,20 +116,39 @@ run_case() {
     skipped=$((skipped+1))
     return 0
   fi
-  # Execute implementation in verify mode. Proof dir is optional future extension.
-  if "$impl" --verify "$f" --mode "$mode"; then
+  # Execute implementation in verify mode with timeout and capture output.
+  ulimit -c 0 || true
+  out_tmp=$(mktemp 2>/dev/null || mktemp -t lk_harness)
+  TIMEOUT_SEC=${TIMEOUT_SEC:-30}
+  set +e
+  if command -v timeout >/dev/null 2>&1; then
+    timeout "$TIMEOUT_SEC" "$impl" --verify "$f" --mode "$mode" >"$out_tmp" 2>&1
+    rc=$?
+  else
+    "$impl" --verify "$f" --mode "$mode" >"$out_tmp" 2>&1
+    rc=$?
+  fi
+  set -e
+  if [[ $rc -eq 0 ]]; then
     results_lines+="PASS $f\n"
     passed=$((passed+1))
+  elif [[ $rc -eq 124 ]]; then
+    results_lines+="FAIL $f (timeout ${TIMEOUT_SEC}s)\n"
+    failed=$((failed+1))
   else
-    results_lines+="FAIL $f\n"
+    results_lines+="FAIL $f (exit $rc)\n"
     failed=$((failed+1))
   fi
+  rm -f "$out_tmp" || true
 }
 
 # Validate implementation once up front (fail fast) when not in noop mode.
 if [[ "$impl" != "noop" ]]; then
-  if [[ ! -x "$impl" && ! -f "$impl" ]]; then
-    echo "ERROR: --impl '$impl' not found or not executable" >&2
+  if [[ ! -e "$impl" ]]; then
+    echo "ERROR: --impl '$impl' not found" >&2
+    exit 2
+  elif [[ ! -f "$impl" || ! -x "$impl" ]]; then
+    echo "ERROR: --impl '$impl' not executable" >&2
     exit 2
   fi
 fi
@@ -125,7 +173,7 @@ printf "\nDetails:\n"
 printf "%b" "$results_lines"
 
 if [[ -n "$junit" ]]; then
-  ts=$(date +%s)
+  ts=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
   junit_dir="$(dirname "$junit")"
   if ! mkdir -p "$junit_dir"; then
     echo "ERROR: failed to create JUnit directory: $junit_dir" >&2

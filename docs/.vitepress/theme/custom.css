@@ -101,6 +101,31 @@
   color: var(--lk-brand-teal);
 }
 
+/* Unify other callouts and improve dark-mode readability */
+.custom-block,
+.custom-block.note,
+.custom-block.info,
+.custom-block.warning,
+.custom-block.danger,
+.custom-block.important {
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-divider);
+}
+.custom-block.note .custom-block-title,
+.custom-block.info .custom-block-title {
+  color: var(--vp-c-brand-1);
+}
+.custom-block.warning,
+.custom-block.danger,
+.custom-block.important {
+  border-left: 4px solid var(--lk-brand-orange);
+}
+.custom-block.warning .custom-block-title,
+.custom-block.danger .custom-block-title,
+.custom-block.important .custom-block-title {
+  color: var(--lk-brand-orange);
+}
+
 /* Nudge VitePress hero layout to vertically center both columns */
 .VPHomeHero {
   /* Reduce default top/bottom whitespace */

@@ -114,16 +114,19 @@
   min-height: auto;          /* avoid large default min-height pushing content down */
 }
 
-/* Optional: soften feature cards on the cream bg */
-.VPFeature .box {
-  background: var(--lk-surface);
-  border: 1px solid var(--lk-divider);
+/* Feature cards: remove double-border look and boost contrast */
+.VPFeature {
+  background: #ffffff !important;
+  border: 1px solid var(--lk-divider) !important;
 }
-
-.VPFeature .box:hover,
-.VPFeature .box:focus-within {
-  border-color: var(--lk-divider);
-  box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 2px 8px rgba(0,0,0,.04);
+.VPFeature .box {
+  background: transparent !important;
+  border: none !important;
+}
+.VPFeature.link:hover,
+.VPFeature.link:focus-visible {
+  border-color: var(--lk-brand-teal) !important;
+  box-shadow: 0 0 0 2px color-mix(in oklch, var(--lk-brand-teal) 25%, transparent) !important;
 }
 
 /* Ensure sidebar/outline use the same background */
@@ -161,3 +164,21 @@
 /* Strengthen default link color for readability on light cream */
 a { color: var(--vp-c-brand-1); }
 a:hover { color: var(--vp-c-brand-2); }
+
+/* Make links in Markdown content obviously links */
+.vp-doc a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1.5px;
+}
+.vp-doc a:hover { text-decoration-thickness: 2px; }
+
+/* Code blocks: increase contrast on both themes */
+:root {
+  --vp-code-block-bg: #ffffff;        /* white on cream for readable contrast */
+  --vp-code-block-color: var(--vp-c-text-1);
+}
+.dark {
+  --vp-code-block-bg: #0f172a;        /* slate-900 */
+  --vp-code-block-color: #e5e7eb;     /* slate-200 */
+}

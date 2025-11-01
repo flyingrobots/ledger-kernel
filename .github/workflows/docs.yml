@@ -33,9 +33,15 @@ jobs:
       - name: Install deps
         run: npm install
 
+      - name: Normalize DOCS_BASE
+        run: |
+          echo "DOCS_BASE=${BASE%/}/" >> "$GITHUB_ENV"
+        env:
+          BASE: ${{ steps.pages.outputs.base_path }}
+
       - name: Build VitePress site
         env:
-          DOCS_BASE: ${{ steps.pages.outputs.base_path }}
+          DOCS_BASE: ${{ env.DOCS_BASE }}
         run: npm run docs:build
 
       - name: Upload artifact

@@ -12,6 +12,11 @@
   --vp-c-bg-alt: var(--lk-bg);
   --vp-c-bg-soft: color-mix(in oklch, var(--lk-bg) 96%, black);
 
+  /* High‑contrast text on cream background (WCAG AA on #F6F1E7) */
+  --vp-c-text-1: #1f2937; /* primary text */
+  --vp-c-text-2: #334155; /* secondary */
+  --vp-c-text-3: #64748b; /* muted */
+
   /* Neutral surfaces and dividers tuned for the cream background */
   --lk-surface: #F3EDE3;   /* cards / feature boxes */
   --lk-divider: #E6DED2;   /* faint rules/borders */
@@ -130,9 +135,19 @@
   background-color: var(--vp-c-bg);
 }
 
-/* Keep dark theme defaults (only tweak brand for contrast) */
+/* Dark theme: keep brand but ensure readable text */
 .dark {
   --vp-c-brand-1: color-mix(in oklch, var(--lk-brand-teal) 85%, white);
   --vp-c-brand-2: color-mix(in oklch, var(--lk-brand-teal) 70%, white);
   --vp-c-brand-3: color-mix(in oklch, var(--lk-brand-teal) 60%, white);
+  --vp-c-text-1: #e5e7eb; /* slate-200 */
+  --vp-c-text-2: #cbd5e1; /* slate-300 */
+  --vp-c-text-3: #94a3b8; /* slate-400 */
+}
+
+/* Navbar links sometimes inherit a translucent color; pin to text-1 */
+.VPNavBar .VPNavBarMenuLink,
+.VPNavBar .title,
+.VPNavBar .VPNavBarMenuGroup .trigger {
+  color: var(--vp-c-text-1);
 }

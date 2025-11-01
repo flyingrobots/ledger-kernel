@@ -1,0 +1,29 @@
+name: Compliance Harness (noop)
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  harness-noop:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run harness in noop mode
+        run: |
+          if [ -x tests/harness/run_tests.sh ]; then \
+            bash tests/harness/run_tests.sh --impl noop --mode branch --junit junit.xml; \
+          else \
+            echo "Harness not present on this commit; skipping"; \
+            printf "<?xml version=\"1.0\"?><testsuite name=\"ledger-kernel-compliance\" tests=\"0\"/>" > junit.xml; \
+          fi
+      
+      - name: Upload JUnit (summary)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: compliance-junit
+          path: junit.xml

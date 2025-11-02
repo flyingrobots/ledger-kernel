@@ -26,8 +26,8 @@ mkdir -p "$root_dir/docs/spec" \
 
 # Copy source-of-truth root docs into VitePress section index pages
 cp -f "$root_dir/SPEC.md"           "$root_dir/docs/spec/index.md"
-# Mirror the formal model into /spec/model for site navigation
-cp -f "$root_dir/MODEL.md"          "$root_dir/docs/spec/model.md"
+# Publish the raw model as a source appendix page (do not overwrite curated /spec/model)
+cp -f "$root_dir/MODEL.md"          "$root_dir/docs/spec/model-source.md"
 cp -f "$root_dir/REFERENCE.md"      "$root_dir/docs/reference/index.md"
 cp -f "$root_dir/ARCHITECTURE.md"   "$root_dir/docs/architecture/index.md"
 cp -f "$root_dir/COMPLIANCE.md"     "$root_dir/docs/compliance/index.md"

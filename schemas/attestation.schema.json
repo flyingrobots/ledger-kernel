@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://flyingrobots.dev/ledger-kernel/schemas/attestation.schema.json",
+  "title": "Attestation",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "signer": { "type": "string" },
+    "algorithm": { "type": "string", "enum": ["ed25519", "p256", "rsa-pss-sha256"], "default": "ed25519" },
+    "signature": { "type": "string", "pattern": "^[A-Za-z0-9_-]+=*$", "description": "base64url" },
+    "scope": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "keyHint": { "type": "string" }
+  },
+  "required": ["signer","algorithm","signature","scope","timestamp"]
+}
+

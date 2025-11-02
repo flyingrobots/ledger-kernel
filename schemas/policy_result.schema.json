@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://flyingrobots.dev/ledger-kernel/schemas/policy_result.schema.json",
+  "title": "Policy Result",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "accepted": { "type": "boolean" },
+    "reasons": { "type": "array", "items": { "type": "string" } }
+  },
+  "required": ["accepted"]
+}
+

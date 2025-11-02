@@ -42,7 +42,8 @@ export default withMermaid(defineConfig({
             { text: 'Determinism & Time', link: '/implementation/determinism' },
             { text: 'Error Model', link: '/implementation/errors' },
             { text: 'Security & Threat Model', link: '/implementation/security' },
-            { text: 'Limitations & Future Work', link: '/implementation/future' }
+            { text: 'Limitations & Future Work', link: '/implementation/future' },
+            { text: 'Implementers Guide', link: '/implementation/implementers' }
           ]
         }
       ],

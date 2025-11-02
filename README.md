@@ -88,6 +88,47 @@ Every compliant implementation **MUST** enforce:
 | Temporal Monotonicity | Timestamps never regress |
 | Namespace Isolation | Ledgers are independent |
 
+## Implementing the spec?
+
+If you’re building your own implementation (in C, Rust, Go, …), here’s the quickest path:
+
+1) Pin this spec as a submodule (recommended)
+
+```bash
+git submodule add -b main https://github.com/flyingrobots/ledger-kernel external/ledger-kernel
+git submodule update --init --recursive
+```
+
+2) Expose a compliance mode in your CLI
+
+```bash
+your-cli verify --compliance \
+  [--level core|policy|wasm] \
+  [--output compliance.json] \
+  [--schema external/ledger-kernel/schemas/compliance_report.schema.json]
+```
+
+3) Emit a report that validates against the schema
+
+```
+external/ledger-kernel/schemas/compliance_report.schema.json
+```
+
+4) Run it locally or in CI
+
+```bash
+your-cli verify --compliance
+jq -e '.summary.core=="PASS"' compliance.json
+```
+
+Documentation
+- Spec → Model / Formal Spec / Wire Format / Compliance live under `docs/spec/` (rendered at the docs site).
+- How to run the harness (user‑facing): `docs/cli/harness.md`.
+- Implementers Guide (repo setup, CLI contract, CI snippets): `docs/implementation/implementers.md`.
+
+Reference implementation
+- Portable C reference: https://github.com/flyingrobots/libgitledger
+
 ## Quick Start
 
 1.  **Install libgitledger**

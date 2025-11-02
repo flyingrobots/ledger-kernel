@@ -41,19 +41,19 @@ Each layer in the stack has a distinct and well-defined set of responsibilities.
 
 ### 2.1 Ledger-Kernel (Specification + Model)
 
-This foundational layer defines the axiomatic properties of the system. Here, we define the abstract rules that must always be true for a ledger to be considered valid. Its responsibilities include defining the **semantic and mathematical invariants** (see [`SPEC`](../spec/), and [`MODEL`](../model/)), specifying the canonical reference layout and data schemas, and provide the compliance suite and defining all proof obligations for implementations.
+This foundational layer defines the axiomatic properties of the system. Here, we define the abstract rules that must always be true for a ledger to be considered valid. Its responsibilities include defining the **semantic and mathematical invariants** (see [`SPEC.md`](./SPEC.md), and [`MODEL.md`](./MODEL.md)), specifying the canonical reference layout and data schemas, and provide the compliance suite and defining all proof obligations for implementations.
 
 ### 2.2 `libgitledger` (Core Runtime)
 
 This layer is the core runtime, a concrete and portable C implementation of the abstract specification. It implements the logic for Git object creation, reference management, and invariant validation.
 
-Its role is to expose the canonical, language-neutral Reference API (see [`Reference API`](../reference/)).
+Its role is to expose the canonical, language-neutral Reference API (see [`REFERENCE.md`](./REFERENCE.md)).
 
 > [!tip] What if AI could generate and emit compliance proofs for every mutating operation?
 
 ### 2.3 Adapters / Ports
 
-Adapters are thin, pluggable components that translate between the core domain/Reference API and external systems (e.g., Git via libgit2, filesystem stubs, a WASM policy VM, an RPC daemon, or a crash journal). They are responsible for protocol/I-O translation, durability boundaries, optional policy runtime embedding, and providing test doubles. Adapters implement the canonical port contracts defined by the Reference API so the core remains implementation‑agnostic and the kernel’s semantics do not depend on any specific integration technology.
+This layer serves as the core runtime. A concrete, portable C implementation of the abstract specification is provided as a reference implementation, `libgitledger`.  It implements the complete logic for Git object creation, reference management, and invariant validation, while exposing the canonical language-neutral Reference API described in [`REFERENCE.md`](./REFERENCE.md).  Every operation that mutates repository state automatically generates and emits a compliance proof, ensuring that each change is cryptographically verifiable and audit-ready.
 
 | **Adapter** | **Role** |
 |---|---|
@@ -186,7 +186,7 @@ B <--> A <--> C
 
 ---
 
-## 5.0 Ref Layout (Normative)
+### 5.0 Ref Layout (Normative)
 
 The following Git reference layout is normative, meaning all compliant implementations must adhere to this structure.
 
@@ -205,7 +205,7 @@ B --> D(_meta);
 
 ---
 
-## 6.0 Proof and Audit Pipeline
+### 6.0 Proof and Audit Pipeline
 
 The architecture mandates that every mutating operation emits a corresponding proof object. A separate, asynchronous auditor process can then validate these proofs to ensure ongoing compliance.
 
@@ -242,7 +242,7 @@ This pattern provides a clear and robust path for future extensions, including:
 
 ---
 
-## 8.0 Security Model
+### 8.0 Security Model
 
 The system's security is derived from a composite model of five key principles:
 
@@ -260,7 +260,7 @@ The system's security is derived from a composite model of five key principles:
 
 ---
 
-## 9.0 Dependency Graph (Summary)
+### 9.0 Dependency Graph (Summary)
 
 The following diagram summarizes the complete, one-way dependency graph of the architecture, from the abstract specification to the concrete user-facing tools.
 
@@ -274,7 +274,7 @@ D --> E[User CLI / Web];
 
 ---
 
-## 10.0 Design Principles
+### 10.0 Design Principles
 
 The architecture is governed by five core design principles, which are summarized below.
 

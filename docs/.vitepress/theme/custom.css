@@ -195,6 +195,19 @@
   color: var(--vp-c-text-1) !important;
 }
 
+/* Use orange accent for headings and active nav underline */
+h2, h3 { scroll-margin-top: calc(var(--vp-nav-height) + 24px); }
+:.where {}
+.vp-doc h2 { border-left: 4px solid var(--lk-brand-orange); padding-left: 0.6rem; }
+.vp-doc h3 { border-left: 3px solid var(--lk-brand-orange); padding-left: 0.5rem; }
+
+/* Active top-nav link underline accent */
+.VPNavBar .VPNavBarMenuLink.active {
+  color: var(--vp-c-brand-1) !important;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
 /* Strengthen default link color for readability on light cream */
 a { color: var(--vp-c-brand-1); }
 a:hover { color: var(--vp-c-brand-2); }
@@ -206,6 +219,9 @@ a:hover { color: var(--vp-c-brand-2); }
   text-decoration-thickness: 1.5px;
 }
 .vp-doc a:hover { text-decoration-thickness: 2px; }
+
+/* Pager spacing so it doesn't visually collide with the sidebar */
+.VPDocFooter .prev-next { padding-left: 4px; }
 
 /* Code blocks: increase contrast on both themes */
 :root {

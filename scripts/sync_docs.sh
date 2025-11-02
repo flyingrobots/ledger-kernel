@@ -17,15 +17,17 @@ if [ "$missing" -ne 0 ]; then
 fi
 
 mkdir -p "$root_dir/docs/spec" \
-         "$root_dir/docs/model" \
          "$root_dir/docs/reference" \
          "$root_dir/docs/architecture" \
          "$root_dir/docs/compliance" \
-         "$root_dir/docs/implementation"
+         "$root_dir/docs/implementation" \
+         "$root_dir/docs/cli" \
+         "$root_dir/docs/appendix"
 
 # Copy source-of-truth root docs into VitePress section index pages
 cp -f "$root_dir/SPEC.md"           "$root_dir/docs/spec/index.md"
-cp -f "$root_dir/MODEL.md"          "$root_dir/docs/model/index.md"
+# Optionally also mirror the model into /spec/model when ready
+# cp -f "$root_dir/MODEL.md"          "$root_dir/docs/spec/model.md"
 cp -f "$root_dir/REFERENCE.md"      "$root_dir/docs/reference/index.md"
 cp -f "$root_dir/ARCHITECTURE.md"   "$root_dir/docs/architecture/index.md"
 cp -f "$root_dir/COMPLIANCE.md"     "$root_dir/docs/compliance/index.md"

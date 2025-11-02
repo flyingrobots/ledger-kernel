@@ -10,9 +10,9 @@ Version: 0.1.0
 
 # `libgitledger`: A Git‑Native Reference Implementation of a Deterministic, Verifiable Ledger
 
-## Abstract
+##Abstract
 
-This paper presents `libgitledger`, a portable C reference implementation of a verifiable, append‑only ledger that operates natively within a standard Git repository. The library instantiates the formal model described in [`MODEL`](../model/) and adheres to the invariants set forth in [`SPEC`](../spec/) by constraining a designated Git reference to fast‑forward only evolution, serializing entries using a canonical JSON encoding, and binding those entries to cryptographic attestations.
+This paper presents `libgitledger`, a portable C reference implementation of a verifiable, append‑only ledger that operates natively within a standard Git repository. The library instantiates the formal model described in [`MODEL.md`](./MODEL.md) and adheres to the invariants set forth in [`SPEC.md`](./SPEC.md) by constraining a designated Git reference to fast‑forward only evolution, serializing entries using a canonical JSON encoding, and binding those entries to cryptographic attestations.
 
 Policy compliance is enforced through a deterministic evaluation interface that admits both native predicates and an optional, fuel‑metered WebAssembly policy engine.
 
@@ -24,7 +24,7 @@ We describe the system architecture, data paths for append, replay, and verify o
 
 ## 1. Introduction
 
-Git’s content‑addressed object model, together with its global reference namespace, furnishes a robust foundation for provenance. Yet, its affordances for branching and history rewriting introduce ambiguity for applications that require a totally ordered, non‑repudiable history. `libgitledger` reconciles this tension by erecting a deterministic state machine on top of a constrained Git reference whose history evolves exclusively via fast‑forward commits. Each commit encodes a single ledger entry, and the entire sequence forms a pure, replayable computation whose output state is uniquely determined by the ordered set of entries. This paper explains how the implementation realizes that model and exposes a minimal, language‑agnostic API compatible with the [`Reference API`](../reference/).
+Git’s content‑addressed object model, together with its global reference namespace, furnishes a robust foundation for provenance. Yet, its affordances for branching and history rewriting introduce ambiguity for applications that require a totally ordered, non‑repudiable history. `libgitledger` reconciles this tension by erecting a deterministic state machine on top of a constrained Git reference whose history evolves exclusively via fast‑forward commits. Each commit encodes a single ledger entry, and the entire sequence forms a pure, replayable computation whose output state is uniquely determined by the ordered set of entries. This paper explains how the implementation realizes that model and exposes a minimal, language‑agnostic API compatible with [`REFERENCE.md`](./REFERENCE.md).
 
 The overarching design thesis is that **a ledger should be a conservative extension of infrastructure developers already trust**. By forming the kernel using Git, a well-trusted, battle-worn powerhouse, without introducing bespoke storage or a privileged daemon, `libgitledger` inherits well‑understood operational semantics while adding determinism, cryptographic attestation, and verifiable policy enforcement. The result is a compact, auditable implementation that can be linked into a wide range of host systems.
 
@@ -227,7 +227,7 @@ The evaluation of `libgitledger` rests on three pillars.
 
 **Unit tests** validate that entry serialization round‑trips faithfully and that computed hashes are invariant under platform variation, including differences in endianness and C library implementations.
 
-**Compliance tests** mirror the [`COMPLIANCE`](../compliance/) and [`SPEC`](../spec/) documents, asserting fast‑forward enforcement, policy gate correctness, attestation verification, and replay purity against a suite of golden repositories.
+**Compliance tests** mirror [`COMPLIANCE.md`](./COMPLIANCE.md) and [`SPEC.md`](./SPEC.md), asserting fast‑forward enforcement, policy gate correctness, attestation verification, and replay purity against a suite of golden repositories.
 
 **Property‑based and fuzz testing** generate randomized sequences of valid and invalid entries to probe invariants and ensure that rejection cases are classified precisely.
 
@@ -257,7 +257,7 @@ Additional policy backends and hardware‑backed key providers are also plausibl
 
 ---
 
-## 18. Repository Organization (Illustrative)
+## Appendix: Repository Organization (Illustrative)
 
 The concrete source tree that realizes this design follows a conventional layout with public headers in an `include` directory, core logic in `src/core`, adapters in `src/adapters`, utilities in `src/util`, and policies under a dedicated subtree. While the structure is not normative, it reflects the modular boundaries described throughout this paper and facilitates targeted testing and review.
 
@@ -295,54 +295,50 @@ flowchart TB
     C7 --> U2
 ```
 
-## 19. Policy VM (WASM Option)
-- Wasmtime or WAVM with deterministic config:
-  - no wall-clock, no file/network, fixed fuel
-  - imports: `read_prev_entry()`, `read_env_whitelist()`
-- Policy returns bool and optional machine-readable reason code
+12) Policy VM (WASM Option)
+- `Wasmtime` or WAVM with deterministic config:
+	- no wall-clock, no file/network, fixed fuel.
+	- imports: `read_prev_entry()`, `read_env_whitelist()`.
+- Policy returns bool and optional machine-readable reason code.
 
 ---
 
-## 20. Security Posture
+13) Security Posture
 - All ref updates are FF-guarded; no rebase/force-push paths compiled.
 - Signatures default to Ed25519; GPG available for enterprise.
 - Proofs and compliance reports can themselves be committed under _ledger/_meta/.
 
 ---
 
-## 21. Performance Notes
+14) Performance Notes
 - BLAKE3 for hashing (SIMD if available).
 - Streamed canonical JSON writing to avoid large buffers.
 - Optional mmap for object reads (behind adapter flag).
 
 ---
 
-## 22. Versioning & Compatibility
+15) Versioning & Compatibility
 - `ledger_version()` embeds "ledger-kernel/0.1.0".
 - Any change to serialization or invariant semantics → major.
 - Minor versions can add optional APIs guarded by `LEDGER_API_LEVEL`.
 
 ---
 
-## 23. Minimal Example (end-to-end)
+## 16) Minimal Example (end-to-end)
 
 ```c
-ledger_ctx_t *ctx;
-ledger_entry_t *e;
-unsigned char dig[32];
-
-ledger_init(&ctx, ".");
-const char *payload = "{\"msg\":\"hello\"}";
-ledger_entry_new(&e, "text/json", payload, strlen(payload));
-ledger_append(ctx, "refs/_ledger/demo/current", e);
-ledger_state_t *st;
-ledger_replay(ctx, "refs/_ledger/demo/current", &st);
+ledger_ctx_t *ctx; ledger_entry_t *e; unsigned char dig[32];\
+ledger_init(&ctx, ".");\
+const char *payload = "{\"msg\":\"hello\"}";\
+ledger_entry_new(&e, "text/json", payload, strlen(payload));\
+ledger_append(ctx, "refs/_ledger/demo/current", e);\
+ledger_state_t *st; ledger_replay(ctx, "refs/_ledger/demo/current", &st);\
 ledger_state_digest(st, dig); /* use digest */
 ```
 
 ---
 
-## 24. CI Pipeline (suggested)
+### 17) CI Pipeline (suggested)
 
 - Linux/macOS runners; build `debug`+`release`.
 - Run unit + compliance + determinism jobs.
@@ -351,7 +347,7 @@ ledger_state_digest(st, dig); /* use digest */
 
 ---
 
-## 25. Milestones (M0 → M6)
+### 18) Milestones (M0 → M6)
 
 - M0: skeleton repo, header/API stubs, ctx init.
 - M1: canonical JSON + blake3; entry hash stable.

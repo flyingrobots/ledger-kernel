@@ -197,7 +197,6 @@
 
 /* Use orange accent for headings and active nav underline */
 h2, h3 { scroll-margin-top: calc(var(--vp-nav-height) + 24px); }
-:.where {}
 .vp-doc h2 { border-left: 4px solid var(--lk-brand-orange); padding-left: 0.6rem; }
 .vp-doc h3 { border-left: 3px solid var(--lk-brand-orange); padding-left: 0.5rem; }
 

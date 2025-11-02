@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://flyingrobots.dev/ledger-kernel/schemas/compliance_report.schema.json",
+  "title": "Compliance Report",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "implementation": { "type": "string" },
+    "version": { "type": "string" },
+    "date": { "type": "string", "format": "date-time" },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "clause": { "type": "array", "items": { "type": "string" } },
+          "status": { "type": "string", "enum": ["PASS","PARTIAL","FAIL","N/A"] },
+          "notes": { "type": "string" }
+        },
+        "required": ["id","clause","status"]
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "core": { "type": "string", "enum": ["PASS","PARTIAL","FAIL","N/A"] },
+        "policy": { "type": "string", "enum": ["PASS","PARTIAL","FAIL","N/A"] },
+        "wasm": { "type": "string", "enum": ["PASS","PARTIAL","FAIL","N/A"] }
+      },
+      "required": ["core","policy","wasm"]
+    }
+  },
+  "required": ["implementation","version","date","results","summary"]
+}
+

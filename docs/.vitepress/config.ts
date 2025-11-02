@@ -54,7 +54,8 @@ export default withMermaid(defineConfig({
             { text: 'Overview', link: '/cli/' },
             { text: 'Commands', link: '/cli/commands' },
             { text: 'Configuration', link: '/cli/config' },
-            { text: 'Examples', link: '/cli/examples' }
+            { text: 'Examples', link: '/cli/examples' },
+            { text: 'Running the Harness', link: '/cli/harness' }
           ]
         }
       ],

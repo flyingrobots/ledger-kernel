@@ -47,6 +47,12 @@ Notes
 
 The harness emits a JSON file conforming to `schemas/compliance_report.schema.json`.
 
+See:
+
+```
+schemas/compliance_report.schema.json
+```
+
 Example
 ```json
 {
@@ -103,4 +109,3 @@ Badges
 - [Model](/spec/model) — M‑1 … M‑9
 - [Formal Spec](/spec/formal-spec) — FS‑1 … FS‑14
 - [Wire Format](/spec/wire-format) — Canonical encodings
-

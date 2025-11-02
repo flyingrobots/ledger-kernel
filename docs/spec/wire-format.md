@@ -6,6 +6,8 @@ title: Wire Format
 
 This page defines canonical encodings for Entries, Attestations, and related metadata. It operationalizes FS‑10 (Canonical Serialization & Hashing), FS‑1..FS‑3 (data structures), and FS‑12 (namespaces & storage).
 
+Note on aliases: the filenames `schemas/entry.json`, `schemas/attest.json`, and `schemas/policy.json` are JSON Schema aliases that `$ref` the canonical definitions in `schemas/entry.schema.json`, `schemas/attestation.schema.json`, and `schemas/policy.schema.json` respectively.
+
 ## 1. Canonical Serialization (FS‑10)
 
 Ledger‑Kernel uses a JSON representation with a strict canonicalization profile to ensure byte‑stable hashing and signing.

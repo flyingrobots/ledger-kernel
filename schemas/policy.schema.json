@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://flyingrobots.dev/ledger-kernel/schemas/policy.schema.json",
+  "title": "Policy Definition",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "description": "Policy identifier" },
+    "version": { "type": "string" },
+    "engine": { "type": "string", "enum": ["wasm"], "description": "Deterministic policy engine" },
+    "wasm": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "moduleHash": { "type": "string", "pattern": "^[a-f0-9]{64}$", "description": "BLAKE3-256 of WASM module bytes" },
+        "entry": { "type": "string", "default": "validate" }
+      },
+      "required": ["moduleHash"]
+    },
+    "params": { "type": "object", "additionalProperties": true }
+  },
+  "required": ["id", "engine", "wasm"]
+}
+

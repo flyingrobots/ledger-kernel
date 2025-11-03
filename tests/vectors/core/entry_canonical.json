@@ -1,0 +1,9 @@
+{
+  "id": "", 
+  "parent": null, 
+  "timestamp": "2025-10-31T00:00:00Z", 
+  "author": { "id": "alice@example.org" }, 
+  "payload": { "type": "text/json", "data": { "op": "append", "v": "1" } }, 
+  "attestations": []
+}
+

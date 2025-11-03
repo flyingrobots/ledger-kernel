@@ -1,0 +1,35 @@
+name: CBOR Vectors (Python/Go)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  cbor-vectors:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Python cbor id
+        id: py
+        run: |
+          python -m pip install --upgrade pip cbor2 blake3
+          python scripts/vectors/python/cbor_canon.py tests/vectors/core/entry_canonical.json > py_cbor_id.txt
+          echo "id=$(cat py_cbor_id.txt)" >> $GITHUB_OUTPUT
+
+      - name: Go cbor id
+        id: go
+        uses: actions/setup-go@v5
+        with: { go-version: '1.21.x' }
+      - run: |
+          cd scripts/vectors/go-cbor && go build -o ../../bin_lk_cbor_go .
+          scripts/bin_lk_cbor_go tests/vectors/core/entry_canonical.json > go_cbor_id.txt
+          echo "id=$(cat go_cbor_id.txt)" >> $GITHUB_OUTPUT
+
+      - name: Compare CBOR IDs
+        run: |
+          echo "Python CBOR: ${{ steps.py.outputs.id }}"
+          echo "Go CBOR:     ${{ steps.go.outputs.id }}"
+          test "${{ steps.py.outputs.id }}" = "${{ steps.go.outputs.id }}"
+

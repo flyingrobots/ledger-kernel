@@ -155,3 +155,14 @@ LK-SHA256: 9a7c…
 - `schemas/policy_result.schema.json` — Policy evaluation result
 
 These schemas are informative; the canonicalization and hashing rules above are normative.
+### CBOR Canonical Profile (Optional)
+
+Implementations MAY opt into a CBOR Canonical Encoding profile (RFC 8949 §4.2) for the id preimage. In this profile:
+
+- The preimage is the canonical CBOR encoding of the Entry object with `attestations` omitted.
+- The identifier `id_cbor` is defined as BLAKE3‑256 over the CBOR canonical bytes.
+- JSON and CBOR preimages produce different byte sequences; ids therefore differ. Mixed mode MUST NOT be used within a single ledger without an explicit migration.
+
+Dual‑format period
+- Hosts MAY accept either JSON or CBOR preimages when verifying historical entries during a migration window. New entries SHOULD use one format exclusively per ledger namespace.
+- Implementations MUST document which profile is active and SHOULD record a trailer (e.g., `LK-Profile: json1|cbor1`).

@@ -8,6 +8,10 @@ export default withMermaid(defineConfig({
   // Keep while we reshuffle content into the new IA
   ignoreDeadLinks: true,
   themeConfig: {
+    footer: {
+      message: 'Spec docs built with VitePress · Latest version: see GitHub tags',
+      copyright: '© 2025 Ledger‑Kernel authors'
+    },
     nav: [
       { text: 'Spec', link: '/spec/', activeMatch: '^/spec/' },
       { text: 'Reference Implementation', link: '/implementation/', activeMatch: '^/implementation/' },

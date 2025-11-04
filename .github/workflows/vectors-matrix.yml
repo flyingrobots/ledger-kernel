@@ -55,3 +55,14 @@ jobs:
           test "${{ steps.py.outputs.id }}" = "${{ steps.rs.outputs.id }}"
           test "${{ steps.rs.outputs.id }}" = "${{ steps.go.outputs.id }}"
 
+      - name: C (blake3) check over canonical bytes
+        run: |
+          sudo apt-get update && sudo apt-get install -y libblake3-dev
+          echo -n "${{ steps.py.outputs.id }}" > py_id_hex
+          # Compute id via C from canonical bytes (Python canonicalizer used for bytes)
+          python scripts/vectors/python/canon.py tests/vectors/core/entry_canonical.json > can.txt
+          # Convert canonical string back to bytes (UTF-8)
+          printf "%s" "$(cat can.txt)" | gcc -O2 -lblake3 -o c_b3sum -x c - scripts/vectors/c/blake3_id.c
+          printf "%s" "$(cat can.txt)" | ./c_b3sum > c_id.txt
+          echo "C:      $(cat c_id.txt)"
+          test "$(cat c_id.txt)" = "${{ steps.py.outputs.id }}"

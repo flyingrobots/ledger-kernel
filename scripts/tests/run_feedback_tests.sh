@@ -14,7 +14,7 @@ if ! rg -n "^#\[panic_handler\]" "$f" >/dev/null; then
   exit 1
 fi
 # Try to build (requires toolchain + target installed)
-cargo build --release --target wasm32-unknown-unknown >/dev/null
+( cd tests/policy/wasm/demo && cargo build --release --target wasm32-unknown-unknown >/dev/null )
 T1
 chmod +x scripts/tests/feedback/01_wasm_panic_handler.sh
 

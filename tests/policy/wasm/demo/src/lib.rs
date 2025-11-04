@@ -34,3 +34,9 @@ pub extern "C" fn validate(
     if accept { 0 } else { 1 }
 }
 
+use core::panic::PanicInfo;
+
+#[panic_handler]
+fn panic(_info: &PanicInfo) -> ! {
+    loop {}
+}

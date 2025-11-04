@@ -3,13 +3,14 @@ name: Release Artifacts
 on:
   push:
     tags:
-      - 'v*'
+      - 'v[0-9]+.[0-9]+.[0-9]+'
 
 permissions:
   contents: write
 
 jobs:
   release:
+    if: github.ref_type == 'tag' && startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -19,6 +20,13 @@ jobs:
 
       - name: Prepare assets
         run: |
+          set -euo pipefail
+          for dir in schemas tests/vectors scripts/vectors; do
+            if [ ! -d "$dir" ]; then
+              echo "ERROR: Required directory '$dir' not found" >&2
+              exit 1
+            fi
+          done
           mkdir -p dist
           zip -r dist/schemas.zip schemas
           zip -r dist/vectors.zip tests/vectors scripts/vectors
@@ -31,4 +39,3 @@ jobs:
             dist/vectors.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-

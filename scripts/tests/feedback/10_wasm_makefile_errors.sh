@@ -6,4 +6,4 @@ if rg -n "\|\| true" "$f"; then
   exit 1
 fi
 # Ensure artifact check present
-rg -n "\$\(OUT\)" "$f" >/dev/null
+rg -n 'test -f \$\(OUT\)' "$f" >/dev/null

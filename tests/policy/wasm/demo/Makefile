@@ -7,9 +7,10 @@ OUT=target/$(TARGET)/release/$(NAME).wasm
 all: build
 
 build:
-	rustup target add $(TARGET) >/dev/null 2>&1 || true
+	command -v rustup >/dev/null
+	rustup target add $(TARGET)
 	cargo build --release --target $(TARGET)
+	@test -f $(OUT)
 
 clean:
 	cargo clean
-

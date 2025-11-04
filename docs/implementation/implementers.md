@@ -18,7 +18,7 @@ See [Wire Format](/spec/wire-format) (canonical JSON, hashing/signing, trailers)
 
 ### 1.3. Compliance report
 
-Your CLI should emit a `compliance.json` that validates against `schemas/compliance_report.schema.json`.
+Your CLI should emit a `compliance.json` that validates against [`schemas/compliance_report.schema.json`](https://github.com/flyingrobots/ledger-kernel/blob/main/schemas/compliance_report.schema.json).
 
 ## 2. Recommended repo setup
 
@@ -63,7 +63,7 @@ Minimum checks to implement (see [Compliance](/spec/compliance)):
 
 ## 4. Compliance report shape
 
-The report **MUST** validate against the [schema](./schemas/compliance_report.schema.json).
+The report **MUST** validate against the [schema](https://github.com/flyingrobots/ledger-kernel/blob/main/schemas/compliance_report.schema.json).
 
 Example:
 

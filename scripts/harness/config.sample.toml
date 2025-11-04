@@ -23,10 +23,10 @@ cmd = "bash -c 'exit 0'"
 [checks.C-4]
 clause = ["FS-3","FS-9"]
 level = "policy"
+timeout_sec = 10
 cmd = "bash -c 'exit 64'"  # simulate PARTIAL
 
 [checks.C-5]
 clause = ["FS-6"]
 level = "policy"
 cmd = "bash -c 'exit 0'"
-

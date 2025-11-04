@@ -12,9 +12,9 @@ Provide a portable, deterministic interface for evaluating a policy over a candi
 
 ## 2. Determinism Requirements
 
-- No ambient time: wall‑clock/monotonic clock access is forbidden.
-- No randomness: RNG imports or entropy sources are forbidden.
-- No I/O: filesystem, network, environment variables, and process APIs are forbidden.
+- Ambient time (wall‑clock/monotonic clocks) is forbidden.
+- Randomness (RNG imports or entropy sources) is forbidden.
+- I/O (filesystem, network, environment variables, process APIs) is forbidden.
 - Resource limits: host MUST enforce fuel/step limits and a memory cap (e.g., 32–64 MiB) to prevent non‑termination.
 
 ## 3. Module Exports
@@ -63,4 +63,3 @@ For the WASM level, the harness:
 - expects identical return values and identical diagnostics.
 
 Hosts MUST document memory/fuel limits and any optional imports. Any deviation MUST be reflected in FS‑9 profiles in future versions.
-

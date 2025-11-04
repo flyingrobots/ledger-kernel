@@ -8,6 +8,7 @@ Features
 - Validates the final report against `schemas/compliance_report.schema.json` (best‑effort: Python jsonschema if available, otherwise jq structural checks)
 
 Usage
+
 ```bash
 scripts/harness/run.sh \
   --config scripts/harness/config.sample.toml \
@@ -17,6 +18,7 @@ scripts/harness/run.sh \
 ```
 
 Config (TOML)
+
 ```toml
 [orchestrator]
 implementation = "example-impl"
@@ -44,4 +46,3 @@ Notes
 - The orchestrator is language‑agnostic: each check is just a shell command.
 - Add more checks or levels by extending the TOML `checks.*` sections.
 - For robust schema validation, install Python `jsonschema` or use `ajv` and adapt the script.
-

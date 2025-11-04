@@ -11,6 +11,15 @@
 //   - This demo accepts iff entry_len is even AND state_len is even; otherwise rejects.
 //   - Purely deterministic: no clock, randomness, or host I/O.
 
+/// Safety
+///
+/// Caller must uphold the following preconditions:
+/// - `entry_ptr` is valid for reads of `entry_len` bytes when `entry_len>0`.
+/// - `state_ptr` is valid for reads of `state_len` bytes when `state_len>0`.
+/// - If `out_ptr` is non-null, it is valid for writes of `*out_len_ptr` bytes.
+/// - If `out_len_ptr` is non-null, it is valid for reading and writing a `usize`.
+/// - All non-null pointers are properly aligned for their types.
+/// - The output buffer `[out_ptr, out_ptr + *out_len_ptr)` does not overlap inputs.
 #[no_mangle]
 pub extern "C" fn validate(
     _entry_ptr: *const u8,

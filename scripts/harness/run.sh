@@ -60,10 +60,18 @@ declare -A check_cmd
 declare -A check_clause
 declare -A check_level
 declare -A check_timeout
+declare -a check_order
 
 for line in "${raw_lines[@]}"; do
   if [[ "$line" =~ ^\[(.+)\]$ ]]; then
     current_section="${BASH_REMATCH[1]}"
+    if [[ "$current_section" == checks.* ]]; then
+      cid="${current_section#checks.}"
+      # record order once
+      if [[ " ${check_order[*]} " != *" $cid "* ]]; then
+        check_order+=("$cid")
+      fi
+    fi
     continue
   fi
   key="${line%%=*}"; key="${key// /}"
@@ -85,7 +93,7 @@ for line in "${raw_lines[@]}"; do
       case "$key" in
         cmd) check_cmd["$cid"]="$val";;
         level) check_level["$cid"]="$val";;
-        timeout) check_timeout["$cid"]="$val";;
+        timeout|timeout_sec) check_timeout["$cid"]="$val";;
         clause)
           # normalize array of strings: ["FS-7","FS-8"] -> FS-7,FS-8
           arr="$val"
@@ -164,8 +172,8 @@ run_one() {
   append_result "$id" "$clauses_csv" "$status" "$note"
 }
 
-# Iterate checks as declared in config order
-for key in "${!check_cmd[@]}"; do
+# Iterate checks in declared order
+for key in "${check_order[@]}"; do
   lvl="${check_level[$key]:-core}"
   clauses="${check_clause[$key]:-}"
   to="${check_timeout[$key]:-}"
@@ -248,4 +256,3 @@ if [[ "$LEVEL" != "all" ]]; then
 fi
 
 exit 0
-

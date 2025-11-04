@@ -155,6 +155,7 @@ LK-SHA256: 9a7c…
 - `schemas/policy_result.schema.json` — Policy evaluation result
 
 These schemas are informative; the canonicalization and hashing rules above are normative.
+
 ### CBOR Canonical Profile (Optional)
 
 Implementations MAY opt into a CBOR Canonical Encoding profile (RFC 8949 §4.2) for the id preimage. In this profile:

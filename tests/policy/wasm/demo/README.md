@@ -2,7 +2,7 @@
 
 This minimal Rust crate builds a `wasm32-unknown-unknown` module exporting a single function:
 
-```
+```c
 // extern "C" ABI
 u32 validate(entry_ptr, entry_len, state_ptr, state_len, out_ptr, out_len_ptr)
 ```
@@ -17,19 +17,19 @@ Acceptance rule (demo): accept iff both `entry_len` and `state_len` are even.
 
 - Install the target once:
 
-```
+```bash
 rustup target add wasm32-unknown-unknown
 ```
 
 - Build release artifact:
 
-```
+```bash
 cargo build --release --target wasm32-unknown-unknown
 ```
 
 - The resulting module will be at:
 
-```
+```text
 ./target/wasm32-unknown-unknown/release/policy_wasm_demo.wasm
 ```
 
@@ -41,4 +41,3 @@ A real host would:
 - sandbox execution (fuel/step limits, memory limits) and enforce determinism.
 
 This crate is for conformance demos only.
-

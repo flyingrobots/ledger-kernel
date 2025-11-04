@@ -45,11 +45,13 @@ NOTES:
 
 ### Status
 
-- [ ] Resolved
+- [x] Resolved
 - [ ] Was Already Fixed
 - [ ] Ignored
 
-{evidence and/or rationale}
+Evidence:
+- Tightened tag trigger to `v[0-9]+.[0-9]+.[0-9]+` and added job guard `if: github.ref_type == 'tag' && startsWith(github.ref, 'refs/tags/v')` in `.github/workflows/release.yml`.
+- Test `scripts/tests/feedback/02_release_tag_guard.sh` passes.
 
 ---
 
@@ -74,11 +76,13 @@ NOTES:
 
 ### Status
 
-- [ ] Resolved
+- [x] Resolved
 - [ ] Was Already Fixed
 - [ ] Ignored
 
-{evidence and/or rationale}
+Evidence:
+- Added directory existence checks in the Prepare assets step and fail fast with clear message before zipping.
+- Test `scripts/tests/feedback/03_release_dirs_validation.sh` passes.
 
 ---
 
@@ -95,11 +99,12 @@ NOTES:
 
 ### Status
 
-- [ ] Resolved
+- [x] Resolved
 - [ ] Was Already Fixed
 - [ ] Ignored
 
-{evidence and/or rationale}
+Evidence:
+- Removed trailing newline at EOF of `.github/workflows/release.yml`. Test `scripts/tests/feedback/04_release_eof.sh` passes (no EOF newline).
 
 ---
 
@@ -118,11 +123,13 @@ NOTES:
 
 ### Status
 
-- [ ] Resolved
+- [x] Resolved
 - [ ] Was Already Fixed
 - [ ] Ignored
 
-{evidence and/or rationale}
+Evidence:
+- Replaced `./SPEC.md` and `./MODEL.md` with site-stable links `[Specification](/spec/)` and `[Model](/spec/model)` in `docs/compliance/index.md`.
+- Test `scripts/tests/feedback/05_docs_compliance_links.sh` passes.
 
 ---
 
@@ -139,11 +146,13 @@ NOTES:
 
 ### Status
 
-- [ ] Resolved
+- [x] Resolved
 - [ ] Was Already Fixed
 - [ ] Ignored
 
-{evidence and/or rationale}
+Evidence:
+- Rewrote the error taxonomy table using pipe-delimited columns; removed tabs; added Name column values.
+- Test `scripts/tests/feedback/06_docs_error_table_tabs.sh` passes.
 
 ---
 
@@ -161,11 +170,13 @@ NOTES:
 
 ### Status
 
-- [ ] Resolved
+- [x] Resolved
 - [ ] Was Already Fixed
 - [ ] Ignored
 
-{evidence and/or rationale}
+Evidence:
+- Promoted list item to heading `## 12. Future Work` in `docs/compliance/index.md`.
+- Test `scripts/tests/feedback/07_docs_heading_future.sh` passes.
 
 ---
 
@@ -184,10 +195,11 @@ NOTES:
 ### Status
 
 - [ ] Resolved
-- [ ] Was Already Fixed
+- [x] Was Already Fixed
 - [ ] Ignored
 
-{evidence and/or rationale}
+Evidence:
+- `docs/spec/model-source.md` contains no bare fenced code blocks; `scripts/tests/feedback/08_model_source_codefence_lang.sh` confirms.
 
 ---
 
@@ -211,11 +223,13 @@ NOTES:
 
 ### Status
 
-- [ ] Resolved
+- [x] Resolved
 - [ ] Was Already Fixed
 - [ ] Ignored
 
-{evidence and/or rationale}
+Evidence:
+- Added `strip = true` and `panic = "abort"` under `[profile.release]` in `tests/policy/wasm/demo/Cargo.toml` to reduce wasm size.
+- Test `scripts/tests/feedback/09_wasm_cargo_optimizations.sh` passes.
 
 ---
 
@@ -235,11 +249,13 @@ NOTES:
 
 ### Status
 
-- [ ] Resolved
+- [x] Resolved
 - [ ] Was Already Fixed
 - [ ] Ignored
 
-{evidence and/or rationale}
+Evidence:
+- Removed `|| true`, added explicit `rustup` availability check, target add without suppression, and artifact existence check `test -f $(OUT)` in `tests/policy/wasm/demo/Makefile`.
+- Test `scripts/tests/feedback/10_wasm_makefile_errors.sh` passes.
 
 ---
 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ledger-kernel-compliance" tests="3" failures="0" skipped="3" timestamp="2025-11-01T07:40:04Z">
+  <testcase classname="compliance" name="tests/compliance/01_append_only.yaml">
+    <skipped/>
+  </testcase>
+  <testcase classname="compliance" name="tests/compliance/03_deterministic_replay.yaml">
+    <skipped/>
+  </testcase>
+  <testcase classname="compliance" name="tests/compliance/05_policy_enforcement.yaml">
+    <skipped/>
+  </testcase>
+</testsuite>

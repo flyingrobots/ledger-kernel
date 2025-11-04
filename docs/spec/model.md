@@ -10,6 +10,7 @@ This page formalizes the ledger as a deterministic state machine over Git commit
 
 ## 1. Ledger Objects and Notation
 
+<a id="m-1"></a>
 ::: info M‑1 (Ledger Structure)
 A ledger L SHALL be the tuple (p, E, A, P), where p is a Git ref, E is a totally ordered sequence of entries (Git commits under p), A is the set of attestations bound to entries, and P is the active policy set. Each entry MUST be a conventional Git commit recorded under p. See Formal Spec (FS‑1…FS‑3).
 :::
@@ -26,6 +27,7 @@ The head of L is `Hash(Eₙ) = R[p]`.
 
 ## 2. State and Transition Function
 
+<a id="m-2"></a>
 ::: info M‑2 (State and Transition)
 The ledger state space S SHALL admit a pure, deterministic transition function `T: S × Entry → S` with `S₀ = ∅` and `Sₙ = foldl(T, S₀, E)`.
 :::
@@ -38,6 +40,7 @@ Intuition: given a current state `Sᵢ` and the next entry `Eᵢ₊₁`, produce
 
 ## 3. Admission and Validity
 
+<a id="m-3"></a>
 ::: info M‑3 (Admission Predicate)
 An entry `Eᵢ` is admissible at state `Sᵢ` iff `V(L,Sᵢ,Eᵢ) = true`, where V includes:
 - fast‑forward update of ref `p` (no rebase/merge under `p`),
@@ -49,14 +52,17 @@ If V fails, `Eᵢ` MUST NOT advance `p` and MUST be rejected.
 
 ## 4. Invariants
 
+<a id="m-4"></a>
 ::: info M‑4 (Append‑Only)
 Once recorded, entries MUST NOT be modified or deleted.
 :::
 
+<a id="m-5"></a>
 ::: info M‑5 (Fast‑Forward Only)
 The ref `p` MUST only advance by fast‑forward: `Parent(Eᵢ₊₁) = Hash(Eᵢ)`. No rebases, merges, or non‑linear histories under `p`.
 :::
 
+<a id="m-6"></a>
 ::: info M‑6 (Total Order)
 `E` MUST be a single linear chain (no parallel branches or merge commits under `p`).
 :::
@@ -65,6 +71,7 @@ These invariants ensure a unique, monotonic history suitable for replay.
 
 ## 5. Deterministic Replay
 
+<a id="m-7"></a>
 ::: info M‑7 (Deterministic Replay)
 For any ledgers with identical `E` and identical applicable `P` and encodings, replay SHALL produce identical final states:
 `E¹ = E² ⇒ foldl(T, S₀, E¹) = foldl(T, S₀, E²)`.
@@ -81,12 +88,14 @@ Why it holds:
 - Policy engine evaluations MUST be deterministic (e.g., sandboxed WASM with fixed inputs only and no ambient time/IO).
 - Attestations are verified from repository content; network access is not required.
 
+<a id="m-9"></a>
 ::: info M‑9 (Policy Determinism)
 Policy evaluation MUST be deterministic (e.g., WASM sandbox with fixed inputs and no ambient time). See FS‑3.
 :::
 
 ## 7. Conformance (Verification Without Network)
 
+<a id="m-8"></a>
 ::: info M‑8 (Offline Verify)
 Implementations MUST verify and replay using repository data alone; network access SHALL NOT be required for core verification. See FS‑6.
 :::
@@ -95,4 +104,3 @@ Implementations MUST verify and replay using repository data alone; network acce
 
 - [Formal Spec](/spec/formal-spec) — numbered clauses FS‑1..N (data structures, operations, constraints)
 - [Wire Format](/spec/wire-format) — JSON schemas, attestation encodings, canonical serialization rules
-

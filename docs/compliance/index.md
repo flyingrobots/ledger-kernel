@@ -11,7 +11,7 @@ Version: 0.1.0
 
 ## 1. Purpose
 
-The compliance suite ensures that any implementation of the **Ledger-Kernel** (e.g., `libgitledger`, `ledger-core-rust`, `ledger-js`) adheres to the invariants, semantics, and deterministic behavior defined in [`SPEC`](../spec/) and [`MODEL`](../model/).
+The compliance suite ensures that any implementation of the **Ledger-Kernel** (e.g., `libgitledger`, `ledger-core-rust`, `ledger-js`) adheres to the invariants, semantics, and deterministic behavior defined in [`SPEC.md`](./SPEC.md) and [`MODEL.md`](./MODEL.md).
 
 A compliant implementation must **pass all mandatory tests** and **expose proofs or logs**
 demonstrating correctness.
@@ -123,14 +123,14 @@ $ make determinism
 
 Implementations must emit standardized error codes:
 
-| **Code** | **Name** | **Meaning** |
-|----------|----------|-------------|
-| `E_APPEND_REJECTED` | Append Rejected | Append violates invariants |
-| `E_SIG_INVALID` | Invalid Signature | Attestation verification failed |
-| `E_POLICY_FAIL` | Policy Failed | Policy evaluation false |
-| `E_REPLAY_MISMATCH` | Replay Mismatch | Non-deterministic replay |
-| `E_TEMPORAL_ORDER` | Temporal Order | Timestamp regression |
-| `E_NAMESPACE` | Namespace Conflict | Cross-ledger conflict |
+| **Code** |	**Name** |	**Meaning** |
+|----------|-----------|--------------|
+| `E_APPEND_REJECTED`	Append violates invariants |
+| `E_SIG_INVALID`	Attestation verification failed	|
+| `E_POLICY_FAIL`	Policy evaluation false	|
+| `E_REPLAY_MISMATCH`	Non-deterministic replay |
+| `E_TEMPORAL_ORDER`	Timestamp regression |	
+| `E_NAMESPACE`	Cross-ledger conflict |
 
 This allows cross-implementation comparison of failure semantics.
 
@@ -201,8 +201,7 @@ The report includes version, platform, test summary, and digests.
 
 ---
 
-## 12. Future Work
-
+12. Future Work
 - Property-based generator for randomized append/replay sequences
 - Integration with CI/CD to auto-validate pull requests
 - Optional differential testing between implementations

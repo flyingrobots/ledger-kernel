@@ -1,0 +1,68 @@
+name: Canonicalization Vectors (Python/Rust/Go)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  vectors:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with: { python-version: '3.x' }
+      - name: Install python deps
+        run: python -m pip install --upgrade pip blake3
+      - name: Python compute id
+        id: py
+        run: |
+          python scripts/vectors/python/canon.py tests/vectors/core/entry_canonical.json > py_id.txt
+          echo "id=$(cat py_id.txt)" >> $GITHUB_OUTPUT
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: Build Rust tool
+        run: |
+          cd scripts/vectors/rust
+          cargo build --release
+      - name: Rust compute id
+        id: rs
+        run: |
+          scripts/vectors/rust/target/release/lk_canon_rust tests/vectors/core/entry_canonical.json > rs_id.txt
+          echo "id=$(cat rs_id.txt)" >> $GITHUB_OUTPUT
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with: { go-version: '1.21.x' }
+      - name: Build Go tool
+        run: |
+          cd scripts/vectors/go && go build -o ../../bin_lk_canon_go .
+      - name: Go compute id
+        id: go
+        run: |
+          scripts/bin_lk_canon_go tests/vectors/core/entry_canonical.json > go_id.txt
+          echo "id=$(cat go_id.txt)" >> $GITHUB_OUTPUT
+
+      - name: Compare IDs
+        run: |
+          echo "Python: ${{ steps.py.outputs.id }}"
+          echo "Rust:   ${{ steps.rs.outputs.id }}"
+          echo "Go:     ${{ steps.go.outputs.id }}"
+          test "${{ steps.py.outputs.id }}" = "${{ steps.rs.outputs.id }}"
+          test "${{ steps.rs.outputs.id }}" = "${{ steps.go.outputs.id }}"
+
+      - name: C (blake3) check over canonical bytes
+        run: |
+          sudo apt-get update && sudo apt-get install -y libblake3-dev
+          echo -n "${{ steps.py.outputs.id }}" > py_id_hex
+          # Compute canonical bytes via Python tool
+          python scripts/vectors/python/canon.py tests/vectors/core/entry_canonical.json > can.txt
+          # Compile the C tool and pipe canonical bytes into it
+          gcc -O2 -lblake3 -o c_b3sum scripts/vectors/c/blake3_id.c
+          ./c_b3sum < can.txt > c_id.txt
+          echo "C:      $(cat c_id.txt)"
+          test "$(cat c_id.txt)" = "${{ steps.py.outputs.id }}"

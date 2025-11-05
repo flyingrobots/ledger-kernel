@@ -1,0 +1,32 @@
+[orchestrator]
+implementation = "example-impl"
+version = "0.1.0"
+timeout_sec = 20
+
+# Core checks ---------------------------------------------------
+[checks.C-1]
+clause = ["FS-10"]
+level = "core"
+cmd = "echo canonicalization-ok"
+
+[checks.C-2]
+clause = ["FS-7","FS-8"]
+level = "core"
+cmd = "bash -c 'exit 0'"
+
+[checks.C-3]
+clause = ["FS-11"]
+level = "core"
+cmd = "bash -c 'exit 0'"
+
+# Policy / WASM checks (optional) -------------------------------
+[checks.C-4]
+clause = ["FS-3","FS-9"]
+level = "policy"
+timeout_sec = 10
+cmd = "bash -c 'exit 64'"  # simulate PARTIAL
+
+[checks.C-5]
+clause = ["FS-6"]
+level = "policy"
+cmd = "bash -c 'exit 0'"

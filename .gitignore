@@ -67,3 +67,7 @@ fastlane/test_output
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/*.code-snippets
+# Temp artifacts
+tmp/
+
+FEEDBACK.md

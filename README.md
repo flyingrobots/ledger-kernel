@@ -1,6 +1,9 @@
 # Ledger-Kernel
 
-[![Docs (VitePress)](https://github.com/flyingrobots/ledger-kernel/actions/workflows/docs.yml/badge.svg)](https://flyingrobots.github.io/ledger-kernel/) [![Site](https://img.shields.io/badge/docs-site-blue?logo=github)](https://flyingrobots.github.io/ledger-kernel/)
+> [!IMPORTANT]\
+> This project is under construction.
+
+[![Docs](https://img.shields.io/badge/docs-website-0b7285?logo=readthedocs)](https://flyingrobots.github.io/ledger-kernel/) [![Docs Build](https://github.com/flyingrobots/ledger-kernel/actions/workflows/docs.yml/badge.svg)](https://github.com/flyingrobots/ledger-kernel/actions/workflows/docs.yml) [![Spec Version](https://img.shields.io/github/v/tag/flyingrobots/ledger-kernel?label=spec%20version)](https://github.com/flyingrobots/ledger-kernel/tags)
 
 **Git-native, cryptographically verifiable, append-only ledgers with policy enforcement.**
 
@@ -12,15 +15,15 @@
 
 **Ledger-Kernel** is a formal specification and reference implementation ([`libgitledger`](https://github.com/flyingrobots/libgitledger)) for building verifiable, append-only ledgers directly on top of Git’s object model.
 
-Unlike blockchains or SaaS audit logs, **Ledger-Kernel is just Git**. 
+Unlike blockchains or SaaS audit logs, **Ledger-Kernel is just Git**.\
 It adds deterministic replay, cryptographic attestation, and programmable policy enforcement without introducing new infrastructure.
 
 It uses existing `.git` storage, requiring no daemons or databases. It enforces fast-forward-only semantics to ensure history is immutable and guarantees deterministic replay, where identical input always yields identical state. Every entry is attested for non-repudiable authorship, and the system supports WASM-based policies for validation.
 
-✅ **It's _just_ Git!** No custom storage, no daemons, just `.git`.  
-✅ Enforces fast-forward-only semantics. History is immutable by design.  
-✅ Provides deterministic replay. Same entries = same state, always.  
-✅ Cryptographically attests every entry. Non-repudiable authorship.  
+✅ **It's _just_ Git!** No custom storage, no daemons, just `.git`.\
+✅ Enforces fast-forward-only semantics. History is immutable by design.\
+✅ Provides deterministic replay. Same entries = same state, always.\
+✅ Cryptographically attests every entry. Non-repudiable authorship.\
 ✅ Supports programmable policies. WASM-based rules for entry validation.  
 
 ### Why Use It?
@@ -77,7 +80,8 @@ The architecture is layered. The Kernel Spec defines the formal model and invari
 
 ## Core Invariants
 
-Every compliant implementation **MUST** enforce:
+Every compliant implementation **MUST** enforce:\
+
 | Invariant | Meaning |
 |---|---|
 | Append-Only | Entries cannot be modified or deleted |
@@ -126,18 +130,52 @@ Documentation
 - How to run the harness (user‑facing): `docs/cli/harness.md`.
 - Implementers Guide (repo setup, CLI contract, CI snippets): `docs/implementation/implementers.md`.
 
+## Documentation Quick Links
+
+Spec
+- Overview: `docs/spec/overview.md`
+- Model (hybrid with M‑x call‑outs): `docs/spec/model.md`
+- Formal Spec (FS‑1..FS‑14): `docs/spec/formal-spec.md`
+- Wire Format (JSON canonical profile + optional CBOR): `docs/spec/wire-format.md`
+- Compliance (levels, checks C‑1..C‑5, report schema): `docs/spec/compliance.md`
+- Deterministic WASM Policy ABI (FS‑9): `docs/spec/policy-wasm.md`
+- Versioning & Releases: `docs/spec/versioning.md`
+
+CLI / DX
+- Running the Compliance Harness: `docs/cli/harness.md`
+- Implementers Guide: `docs/implementation/implementers.md`
+
+Schemas & Vectors
+- Compliance Report Schema: `schemas/compliance_report.schema.json`
+- Entry / Attestation / PolicyResult Schemas: `schemas/entry.schema.json`, `schemas/attestation.schema.json`, `schemas/policy_result.schema.json`
+- Schema aliases (for convenience): `schemas/entry.json`, `schemas/attest.json`, `schemas/policy.json`
+- Golden vector (JSON): `tests/vectors/core/entry_canonical.json`
+- Canonicalization tools: Python `scripts/vectors/python/canon.py`, Rust `scripts/vectors/rust`, Go `scripts/vectors/go`, C blake3 `scripts/vectors/c/blake3_id.c`
+- CBOR tools: Python `scripts/vectors/python/cbor_canon.py`, Go `scripts/vectors/go-cbor`
+
+Orchestrator & Linter
+- Polyglot orchestrator (TOML → compliance.json): `scripts/harness/run.sh` (see `scripts/harness/README.md`)
+- Sample config: `scripts/harness/config.sample.toml`
+- Spec linter (id/signing/schema): `scripts/lint/spec_lint.py`
+
+CI
+- JSON matrix (fail on divergence): `.github/workflows/vectors-matrix.yml`
+- CBOR matrix: `.github/workflows/vectors-cbor.yml`
+
 Reference implementation
 - Portable C reference: https://github.com/flyingrobots/libgitledger
 
 ## Quick Start
 
 1.  **Install libgitledger**
+
     ```bash
     git clone https://github.com/flyingrobots/ledger-kernel
     cd ledger-kernel && make && sudo make install
     ```
 
 2.  **Initialize a Ledger**
+
     ```bash
     git init my-ledger
     cd my-ledger
@@ -145,6 +183,7 @@ Reference implementation
     ```
 
 3.  **Append an Entry**
+
     ```bash
     git ledger append \
       --ref refs/_ledger/prod/deploys \
@@ -153,6 +192,7 @@ Reference implementation
     ```
 
 4.  **Replay & Verify**
+
     ```bash
     git ledger replay  --ref refs/_ledger/prod/deploys
     git ledger verify  --ref refs/_ledger/prod/deploys
@@ -201,10 +241,10 @@ git mind query "show me all TODO items"
 
 ## Security Model
 
-**Traceability**: Every entry is cryptographically signed.  
-**Non-Repudiation**: Compliance proofs are emitted per operation.  
-**Monotonic Atomicity**: Ledger refs advance only by fast-forward.  
-**Programmable Authorization**: WASM policies act as rule gates.  
+**Traceability**: Every entry is cryptographically signed.\
+**Non-Repudiation**: Compliance proofs are emitted per operation.\
+**Monotonic Atomicity**: Ledger refs advance only by fast-forward.\
+**Programmable Authorization**: WASM policies act as rule gates.\
 **Offline Verifiability**: Anyone with read access can replay history.  
 
 ---
@@ -227,23 +267,23 @@ Compliance levels progress from Core (eight mandatory invariants) to Verified (i
 
 ---
 
-## Project Status 
+## Project Status
 
 ### v0.1.0 (Draft Specification)
 
-The specification is finalized (✅).  
-The [`libgitledger`](https://github.com/flyingrobots/libgitledger) reference implementation and the compliance test suite are both in progress (🚧).  
+The specification is finalized (✅).\
+The [`libgitledger`](https://github.com/flyingrobots/libgitledger) reference implementation and the compliance test suite are both in progress (🚧).\
 [Shiplog](https://github.com/flyingrobots/shiplog) integration using libgitledger and the WASM policy engine are planned for the future (🔜).  
 
 ---
 
 ## Acknowledgments
 
-This project acknowledges 
+This project acknowledges
 
-Git ([Linus Torvalds](https://github.com/torvalds)) for the content-addressed DAG  
-[Certificate Transparency](https://certificate.transparency.dev/) for append-only logs  
-[Sigstore](https://www.sigstore.dev/) for supply-chain attestations  
+Git ([Linus Torvalds](https://github.com/torvalds)) for the content-addressed DAG\
+[Certificate Transparency](https://certificate.transparency.dev/) for append-only logs\
+[Sigstore](https://www.sigstore.dev/) for supply-chain attestations\
 and [Nix](https://nixos.org/) for deterministic builds.  
 
 ---
@@ -276,8 +316,7 @@ Shiplog captures stdout, stderr, exit code, timestamp, author, and reason - the 
 
 <img alt="wesley" src="https://github.com/user-attachments/assets/23e9810c-3f45-4696-8b78-2467f059f83b" width="200" align="right" />
 
-
-Stop describing your data model six times in six different files.  
+Stop describing your data model six times in six different files.\
 Everyone else generates GraphQL from databases. Wesley flips the stack and generates databases from GraphQL.
 
 From one schema, Wesley compiles your entire backend:
@@ -289,7 +328,7 @@ From one schema, Wesley compiles your entire backend:
 - pgTAP tests
 - A SHA-locked "Shipme" certification file for zero-downtime deployments
 
-Your schema is the source of truth. Everything else is a compilation target.  
+Your schema is the source of truth. Everything else is a compilation target.\
 Banish drift. Never think about migrations again. Describe your shapes once and let Wesley handle the rest.
 
 _Go on, deploy on a Friday._
@@ -302,6 +341,7 @@ _Go on, deploy on a Friday._
 git mind ingest notes/
 git mind query "show me all TODO items"
 ```
+
 > _Version your thoughts. Branch your ideas. Merge understanding._
 
 `git-mind` is an open-source protocol and toolkit that turns Git into a database-less, version-controlled semantic knowledge graph — a tool for distributed cognition, evolving interpretation, and human–AI co-thought.
@@ -310,15 +350,15 @@ git mind query "show me all TODO items"
 
 ## Contact
 
-**Author**: _J. Kirby Ross_  
-**Email**: [james@flyingrobots.dev](mailto:james@flyingrobots.dev)  
+**Author**: _J. Kirby Ross_\
+**Email**: [james@flyingrobots.dev](mailto:james@flyingrobots.dev)\
 **GitHub**: [flyingrobots](https://github.com/flyingrobots)  
 
 ---
 
 ## License
 
-MIT License (_with Ethical Use Clause_) · **© 2025 J. Kirby Ross**  
+MIT License (_with Ethical Use Clause_) · **© 2025 J. Kirby Ross**\
 _See [`LICENSE`](./LICENSE) and [`NOTICE`](./NOTICE.md) for terms._
 
 > _“Provenance without clutter. Policy as infrastructure. Zero SaaS, zero guesswork.”_
